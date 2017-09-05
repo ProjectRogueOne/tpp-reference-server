@@ -18,8 +18,10 @@
     "supertest": "^3.0.0"
   },
   "scripts": {
+    "start": "node index.js",
     "test": "mocha",
-    "start": "node index.js"
+    "test:watch": "mocha --watch",
+    "test:debug": "node --inspect node_modules/mocha/bin/_mocha --watch --no-timeouts"
   },
   "repository": {
     "type": "git",
