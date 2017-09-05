@@ -1,12 +1,25 @@
 const request = require('supertest');
 
-process.env.ASPSP_READWRITE_URI = 'example.com';
+const authorization = 'abc';
+const xFapiFinancialId = 'xyz';
+
+process.env.ASPSP_READWRITE_HOST = 'example.com';
+process.env.AUTHORIZATION = authorization;
+process.env.X_FAPI_FINANICAL_ID = xFapiFinancialId;
+
 const { app } = require('../app/index.js');
 const assert = require('assert');
 
 const nock = require('nock');
 
-nock(/example\.com/)
+const requestHeaders = {
+  reqheaders: {
+    'authorization': authorization,
+    'x-fapi-finanical-id': xFapiFinancialId,
+  },
+};
+
+nock(/example\.com/, requestHeaders)
   .get('/')
   .reply(200, { hi: 'ya' });
 

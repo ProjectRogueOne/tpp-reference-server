@@ -4,6 +4,11 @@ Sample TPP server implemented using
 [Node.js](https://nodejs.org/) and
 [express](https://github.com/expressjs/express).
 
+## To configure
+
+You need to set values for the environment variables in the
+`.env.sample` file.
+
 ## To run
 
 Install npm packages and run server as follows:
