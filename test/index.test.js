@@ -5,7 +5,7 @@ const xFapiFinancialId = 'xyz';
 
 process.env.ASPSP_READWRITE_HOST = 'example.com';
 process.env.AUTHORIZATION = authorization;
-process.env.X_FAPI_FINANICAL_ID = xFapiFinancialId;
+process.env.X_FAPI_FINANCIAL_ID = xFapiFinancialId;
 
 const { app } = require('../app/index.js');
 const assert = require('assert');
@@ -15,7 +15,7 @@ const nock = require('nock');
 const requestHeaders = {
   reqheaders: {
     'authorization': authorization,
-    'x-fapi-finanical-id': xFapiFinancialId,
+    'x-fapi-financial-id': xFapiFinancialId,
   },
 };
 
