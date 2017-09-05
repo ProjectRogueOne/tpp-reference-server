@@ -11,6 +11,7 @@
     "request": "^2.81.0"
   },
   "devDependencies": {
+    "mocha": "^3.5.0",
     "sinon": "^3.2.1"
   },
   "scripts": {
