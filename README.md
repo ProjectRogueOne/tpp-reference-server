@@ -13,6 +13,15 @@ npm install
 npm run start
 ```
 
+## To test
+
+To run eslint:
+
+```sh
+npm i -g eslint eslint-plugin-import eslint-config-airbnb-base
+eslint .
+```
+
 ## Deploy to heroku
 
 To deploy to heroku for the first time from a Mac:
