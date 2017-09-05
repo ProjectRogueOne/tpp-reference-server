@@ -5,4 +5,7 @@ const port = process.env.PORT || 8003;
 app.use('/open-banking', proxy(proxyUri));
 
 app.listen(port);
+
 console.log(' listening on port  ' , port);
+
+module.exports = app;

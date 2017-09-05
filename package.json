@@ -14,7 +14,8 @@
   "devDependencies": {
     "mocha": "^3.5.0",
     "nock": "^9.0.14",
-    "sinon": "^3.2.1"
+    "sinon": "^3.2.1",
+    "supertest": "^3.0.0"
   },
   "scripts": {
     "test": "mocha",
