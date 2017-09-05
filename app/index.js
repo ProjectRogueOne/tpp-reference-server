@@ -1,3 +1,5 @@
+if (!process.env.DEBUG) process.env.DEBUG = 'error,log';
+
 const proxy = require('express-http-proxy');
 const app = require('express')();
 const proxyUri = process.env.ASPSP_READWRITE_HOST;

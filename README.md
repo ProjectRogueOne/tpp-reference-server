@@ -41,6 +41,7 @@ heroku create --region eu <newname>
 heroku config:set ASPSP_READWRITE_HOST=example.com
 heroku config:set AUTHORIZATION=<mock-token>
 heroku config:set X_FAPI_FINANICAL_ID=<mock-id>
+heroku config:set DEBUG=error,log
 
 git push heroku master
 ```
