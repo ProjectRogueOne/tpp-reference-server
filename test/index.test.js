@@ -3,6 +3,7 @@ const request = require('supertest');
 const authorization = 'abc';
 const xFapiFinancialId = 'xyz';
 
+process.env.DEBUG = 'error';
 process.env.ASPSP_READWRITE_HOST = 'example.com';
 process.env.AUTHORIZATION = authorization;
 process.env.X_FAPI_FINANCIAL_ID = xFapiFinancialId;
@@ -20,17 +21,17 @@ const requestHeaders = {
 };
 
 nock(/example\.com/, requestHeaders)
-  .get('/')
+  .get('/open-banking/v1.1/accounts')
   .reply(200, { hi: 'ya' });
 
 nock(/example\.com/)
-  .get('/non-existing')
+  .get('/open-banking/non-existing')
   .reply(404);
 
 describe('Proxy', () => {
-  it('returns proxy 200 response for /open-banking', (done) => {
+  it('returns proxy 200 response for /open-banking/v1.1/accounts', (done) => {
     request(app)
-      .get('/open-banking')
+      .get('/open-banking/v1.1/accounts')
       .set('Accept', 'application/json')
       .end((err, res) => {
         assert.equal(res.status, 200);
