@@ -6,33 +6,41 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
       - image: circleci/node:8.4
-
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/mongo:3.4.4
-
     working_directory: ~/repo
-
     steps:
       - checkout
-
-      # Download and cache dependencies
+      - run:
+          name: Give "Restoring Cache" task write access to global node_modules dir
+          command: 'sudo chmod a+w /usr/local/lib/node_modules;'
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
+          - v5-dependencies-{{ checksum "package.json" }}
           # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run: npm i -g eslint eslint-plugin-import eslint-config-airbnb-base && npm install
-
+          - v5-dependencies-
+      - run:
+          name: Restore original global node_modules dir access permissions
+          command: 'sudo chmod 755 /usr/local/lib/node_modules;'
+      - run:
+          name: Global npm install
+          command: 'if [ ! -e /usr/local/lib/node_modules/eslint ]; then sudo npm install -g eslint eslint-plugin-import eslint-config-airbnb-base; else echo "eslint seems to be cached" && sudo ln -s /usr/local/lib/node_modules/eslint/bin/eslint.js /usr/local/bin/eslint; fi;'
+      - run:
+          name: Local npm install
+          command: npm install
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      # run tests!
-      - run: npm test
-      - run: eslint .
+            - /usr/local/lib/node_modules/eslint
+            - /usr/local/lib/node_modules/eslint-plugin-import
+            - /usr/local/lib/node_modules/eslint-config-airbnb-base
+          key: v5-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: Run unit tests
+          command: npm test
+      - run:
+          name: Run eslint checks
+          command: eslint .
