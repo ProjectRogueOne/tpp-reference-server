@@ -1,0 +1,37 @@
+{
+  "name": "sample-tpp-server",
+  "version": "0.1.1",
+  "description": "TPP Middleware Proxy",
+  "main": "index.js",
+  "engines": {
+    "node": "8.4.0"
+  },
+  "dependencies": {
+    "debug": "^3.0.1",
+    "express": "^4.15.4",
+    "express-http-proxy": "^1.0.6",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.5.0",
+    "nock": "^9.0.14",
+    "sinon": "^3.2.1",
+    "supertest": "^3.0.0"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha",
+    "test:watch": "mocha --watch",
+    "test:debug": "node --inspect node_modules/mocha/bin/_mocha --watch --no-timeouts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OpenBankingUK/sample-tpp-server.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/OpenBankingUK/sample-tpp-server/issues"
+  },
+  "homepage": "https://github.com/OpenBankingUK/sample-tpp-server#readme"
+}
