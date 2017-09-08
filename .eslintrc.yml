@@ -1,7 +1,17 @@
-extends: airbnb-base
+# extends: airbnb-base
+"parserOptions": { "ecmaVersion": 6 }
 env:
   node: true
   mocha: true
+ecmaFeatures:
+  arrowFunctions: false                     # enable arrow functions
+  blockBindings: false                      # enable let and const (aka block bindings)
 rules:
   dot-notation: ["error", { "allowPattern": "authorization" }]
   quote-props: ["error", "consistent-as-needed"]
+  no-confusing-arrow:
+  - error
+  - allowParens: false
+  arrow-body-style: ['error', 'as-needed', {
+    requireReturnForObjectLiteral: false,
+  }]
