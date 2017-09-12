@@ -7,23 +7,25 @@ Sample TPP server implemented using
 
 ## Testing
 
-To run the tests run `npm run test`  
-The cookie test will fail unless you set localhost in you hosts file to an example domain (cookies need at least two ..s in the domain name to work) 
-I've used *app.localhost.example*
+Run unit tests with:
+
+```sh
+npm run test
+```
+
+Run tests continuously on file changes in watch mode via:
+
+```sh
+npm run test:watch
+```
 
 ### eslint
 
-To run `eslint` locally make sure you have both eslint and 
-eslint-config-airbnb installed globally  
-`npm install -g eslint`  
-`npm install -g eslint-config-airbnb`
-`npm install -g eslint-config-airbnb-base` 
-`npm install -g eslint-plugin-import` 
+Run eslint checks with:
 
-There are still issues getting eslint to work - airbnb cbase commented out for 
-the moment as it produces a dependency hell 
-
-
+```sh
+npm run eslint
+```
 
 ## To configure
 
