@@ -4,6 +4,29 @@ Sample TPP server implemented using
 [Node.js](https://nodejs.org/) and
 [express](https://github.com/expressjs/express).
 
+
+## Testing
+
+Run unit tests with:
+
+```sh
+npm run test
+```
+
+Run tests continuously on file changes in watch mode via:
+
+```sh
+npm run test:watch
+```
+
+### eslint
+
+Run eslint checks with:
+
+```sh
+npm run eslint
+```
+
 ## To configure
 
 You need to set values for the environment variables in the
