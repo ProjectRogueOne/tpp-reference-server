@@ -2,9 +2,11 @@ if (!process.env.DEBUG) process.env.DEBUG = 'error,log';
 
 const proxy = require('express-http-proxy');
 const express = require('express');
+
 const app = express();
 const cookieParser = require('cookie-parser');
 const { session } = require('./session');
+
 const proxyToHost = process.env.ASPSP_READWRITE_HOST;
 const authorization = process.env.AUTHORIZATION;
 const xFapiFinancialId = process.env.X_FAPI_FINANCIAL_ID;

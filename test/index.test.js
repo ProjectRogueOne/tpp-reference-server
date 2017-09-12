@@ -8,7 +8,7 @@ process.env.ASPSP_READWRITE_HOST = 'example.com';
 process.env.AUTHORIZATION = authorization;
 process.env.X_FAPI_FINANCIAL_ID = xFapiFinancialId;
 
-const {app} = require('../app/index.js');
+const { app } = require('../app/index.js');
 const assert = require('assert');
 
 const nock = require('nock');
@@ -22,40 +22,35 @@ const requestHeaders = {
 
 nock(/example\.com/, requestHeaders)
   .get('/open-banking/v1.1/accounts')
-  .reply(200, {hi: 'ya'});
+  .reply(200, { hi: 'ya' });
 
 nock(/example\.com/)
   .get('/open-banking/non-existing')
   .reply(404);
 
 describe('Sessions', () => {
-
   it('sets a session cookie for /session/make', (done) => {
-
     request(app)
       .get('/session/make')
       .set('Accept', 'application/json')
       .end((err, res) => {
-
-        let mySid = res.body.sid;
-        let cookies = res.headers['set-cookie'];
-        let cookie = cookies && cookies[0] || '';
-        let cookieSet = (cookie.indexOf('session=' + mySid) !== -1);
+        const mySid = res.body.sid;
+        const cookies = res.headers['set-cookie'];
+        const cookie = (cookies && cookies[0]) || '';
+        const cookieSet = (cookie.indexOf(`session=${mySid}`) !== -1);
         assert.equal(true, cookieSet);
         done();
       });
   });
 
   it('destroys a session cookie at /session/delete', (done) => {
-
     request(app)
       .get('/session/delete')
       .set('Accept', 'application/json')
       .end((err, res) => {
-
-        let cookies = res.headers['set-cookie'];
-        let cookie = cookies && cookies[0] || '';
-        let cookieUnSet = (cookie.indexOf('session=;') !== -1);
+        const cookies = res.headers['set-cookie'];
+        const cookie = (cookies && cookies[0]) || '';
+        const cookieUnSet = (cookie.indexOf('session=;') !== -1);
         assert.equal(true, cookieUnSet);
         done();
       });

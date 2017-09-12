@@ -1,5 +1,6 @@
-const uuidv1 = require('uuid/v1');  // Timestamp based UUID
+const uuidv1 = require('uuid/v1'); // Timestamp based UUID
 const log = require('debug')('log');
+
 const cookieOpts = {
   httpOnly: true,
   /* secure: true, */
@@ -9,29 +10,26 @@ const cookieOpts = {
 };
 
 const session = (() => {
-
   // TODO - Persistence Store ?
-  let sessionStore = {};
+  const sessionStore = {};
 
-  const makeSession = (req, res, next) => {
-
+  const makeSession = (req, res) => {
     const mySid = uuidv1();
-    log(' New Session ID is ' + mySid);
+    log(` New Session ID is ${mySid}`);
 
     sessionStore[mySid] = mySid;
     res.cookie('session', mySid, cookieOpts);
 
     res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({sid: mySid}));
+    res.send(JSON.stringify({ sid: mySid }));
 
     return mySid;
   };
 
-  const destroySession = (req, res, next) => {
-
-    let opts = JSON.parse(JSON.stringify(cookieOpts));
-    let sid = req.cookies && req.cookies.session;
-    log(' destroying sid ' + sid);
+  const destroySession = (req, res) => {
+    const opts = JSON.parse(JSON.stringify(cookieOpts));
+    const sid = req.cookies && req.cookies.session;
+    log(` destroying sid ${sid}`);
 
     if (sid) {
       delete sessionStore[sid];
@@ -40,15 +38,15 @@ const session = (() => {
     opts.maxAge = 0;
     opts.expires = new Date(0);
     res.cookie('session', '', opts);
-    res.status(200).send('Deleted')
+    res.status(200).send('Deleted');
   };
 
-  const checkCookies = (req, res, next) => {
+  const checkCookies = (req, res) => {
     // NB Debug code to go
     log('Cookies: ', req.cookies);
     log(' Sessions ');
     log(session.getSessions());
-    res.status(200).send('Cookies')
+    res.status(200).send('Cookies');
   };
 
   const getSessions = () => {
@@ -57,12 +55,11 @@ const session = (() => {
   };
 
   return {
-    checkCookies: checkCookies,
-    makeSession: makeSession,
-    destroySession: destroySession,
-    getSessions: getSessions
-  }
-
+    checkCookies,
+    makeSession,
+    destroySession,
+    getSessions,
+  };
 })();
 
 exports.session = session;
