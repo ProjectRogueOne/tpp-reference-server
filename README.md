@@ -1,9 +1,18 @@
 # Sample TPP Server
 
 Sample TPP server implemented using
-[Node.js](https://nodejs.org/) and
-[express](https://github.com/expressjs/express).
+[Node.js](https://nodejs.org/),
+[express](https://github.com/expressjs/express),
+and
+[express-http-proxy](https://github.com/villadora/express-http-proxy).
 
+## Installation
+
+Install npm packages:
+
+```sh
+npm install
+```
 
 ## Testing
 
@@ -27,28 +36,33 @@ Run eslint checks with:
 npm run eslint
 ```
 
-## To configure
+## To run locally
 
-You need to set values for the environment variables in the
-`.env.sample` file.
-
-## To run
-
-Install npm packages and run server as follows:
+To run using .env file, make a local .env, and run using foreman:
 
 ```sh
-npm install
-npm run start
+cp .env.sample .env
+npm run foreman
+# [OKAY] Loaded ENV .env File as KEY=VALUE Format
+# web.1 | log App listening on port 8003 ...
 ```
 
-## To test
-
-To run eslint:
+Or run with environment variables set on the command line:
 
 ```sh
-npm i -g eslint eslint-plugin-import eslint-config-airbnb-base
-eslint .
+DEBUG=error,log \
+  ASPSP_READWRITE_HOST=localhost:8001 \
+  AUTHORIZATION=alice \
+  X_FAPI_FINANCIAL_ID=abcbank \
+  PORT=8003 \
+  npm start
+#   log  App listening on port 8003 ...
 ```
+
+Set debug log levels using `DEBUG` env var.
+Set API host using `ASPSP_READWRITE_HOST` env var.
+Set hardcoded auth token using `AUTHORIZATION` env var.
+Set hardcoded x-fapi-financial-id using `X_FAPI_FINANCIAL_ID` env var.
 
 ## Deploy to heroku
 

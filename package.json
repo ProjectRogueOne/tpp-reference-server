@@ -25,6 +25,7 @@
     "supertest": "^3.0.0"
   },
   "scripts": {
+    "foreman": "./node_modules/foreman/nf.js start",
     "start": "node index.js",
     "test": "mocha",
     "test:watch": "mocha --watch",
