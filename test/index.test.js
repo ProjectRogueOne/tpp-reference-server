@@ -28,34 +28,48 @@ nock(/example\.com/)
   .get('/open-banking/non-existing')
   .reply(404);
 
-describe('Sessions', () => {
-  it('sets a session cookie for /session/make', (done) => {
+describe('Session Creation', () => {
+  it('returns a guid in the body as a json payload for /session/make', (done) => {
     request(app)
       .get('/session/make')
       .set('Accept', 'application/json')
       .end((err, res) => {
         const mySid = res.body.sid;
-        const cookies = res.headers['set-cookie'];
-        const cookie = (cookies && cookies[0]) || '';
-        const cookieSet = (cookie.indexOf(`session=${mySid}`) !== -1);
-        assert.equal(true, cookieSet);
-        done();
-      });
-  });
-
-  it('destroys a session cookie at /session/delete', (done) => {
-    request(app)
-      .get('/session/delete')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        const cookies = res.headers['set-cookie'];
-        const cookie = (cookies && cookies[0]) || '';
-        const cookieUnSet = (cookie.indexOf('session=;') !== -1);
-        assert.equal(true, cookieUnSet);
+        const isGuid = (mySid.length === 36);
+        assert.equal(true, isGuid);
         done();
       });
   });
 });
+
+
+describe('Session Deletion', () => {
+  let sid = '';
+
+  before((done) => {
+    request(app)
+      .get('/session/make')
+      .set('Accept', 'application/json')
+      .end((err, res) => {
+        sid = res.body.sid;
+        done();
+      });
+  });
+
+
+  it('destroys a session at /session/delete', (done) => {
+    request(app)
+      .get('/session/delete')
+      .set('Accept', 'application/json')
+      .set('authorization', sid)
+      .end((err, res) => {
+        const delSid = res.body.sid;
+        assert.equal(delSid, sid);
+        done();
+      });
+  });
+});
+
 
 describe('Proxy', () => {
   it('returns proxy 200 response for /open-banking/v1.1/accounts', (done) => {

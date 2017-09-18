@@ -5,3 +5,4 @@ env:
 rules:
   dot-notation: ["error", { "allowPattern": "authorization" }]
   quote-props: ["error", "consistent-as-needed"]
+  prefer-destructuring: ["error", { array: false, object: false }]

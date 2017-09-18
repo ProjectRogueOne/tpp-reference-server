@@ -4,15 +4,12 @@ const proxy = require('express-http-proxy');
 const express = require('express');
 
 const app = express();
-const cookieParser = require('cookie-parser');
 const { session } = require('./session');
 
 const proxyToHost = process.env.ASPSP_READWRITE_HOST;
 const authorization = process.env.AUTHORIZATION;
 const xFapiFinancialId = process.env.X_FAPI_FINANCIAL_ID;
 const log = require('debug')('log');
-
-app.use(cookieParser());
 
 app.use('/open-banking', proxy(proxyToHost, {
   proxyReqPathResolver: (request) => {
@@ -29,7 +26,7 @@ app.use('/open-banking', proxy(proxyToHost, {
 
 // NOTE - work in progress
 app.use('/session/make', session.makeSession);
-app.use('/session/check', session.checkCookies); // Sanity check endpoint
 app.use('/session/delete', session.destroySession);
+app.use('/session/check', session.check);
 
 exports.app = app;
