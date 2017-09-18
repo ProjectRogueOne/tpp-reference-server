@@ -56,8 +56,7 @@ describe('Session Deletion', () => {
       });
   });
 
-
-  it('destroys a session at /session/delete', (done) => {
+  xit('destroys a session at /session/delete', (done) => {
     request(app)
       .get('/session/delete')
       .set('Accept', 'application/json')
