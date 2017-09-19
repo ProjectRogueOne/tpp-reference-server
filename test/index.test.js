@@ -21,12 +21,23 @@ const requestHeaders = {
   },
 };
 
+const noAuthHeaders = {
+  reqheaders: {
+    'authorization': '',
+    'x-fapi-financial-id': xFapiFinancialId,
+  },
+};
+
 nock(/example\.com/, requestHeaders)
   .get('/open-banking/v1.1/accounts')
   .reply(200, { hi: 'ya' });
 
 nock(/example\.com/)
   .get('/open-banking/non-existing')
+  .reply(404);
+
+nock(/example\.com/, noAuthHeaders)
+  .get('/open-banking/v1.1/transactions')
   .reply(404);
 
 describe('Session Creation', () => {
@@ -82,8 +93,9 @@ describe('Session Deletion', () => {
 
 
 describe('Proxy', () => {
-  it('returns proxy 200 response for /open-banking/v1.1/accounts', (done) => {
-    session.setSession('foo');
+  session.setSession('foo');
+
+  it('returns proxy 200 response for /open-banking/v1.1/accounts with valid session', (done) => {
     request(app)
       .get('/open-banking/v1.1/accounts')
       .set('Accept', 'application/json')
@@ -99,6 +111,7 @@ describe('Proxy', () => {
     request(app)
       .get('/open-banking/non-existing')
       .set('Accept', 'application/json')
+      .set('authorization', 'foo')
       .end((err, res) => {
         assert.equal(res.status, 404);
         done();
@@ -109,6 +122,19 @@ describe('Proxy', () => {
     request(app)
       .get('/open-banking-invalid')
       .set('Accept', 'application/json')
+      .set('authorization', 'foo')
+      .end((err, res) => {
+        assert.equal(res.status, 404);
+        done();
+      });
+  });
+
+
+  xit('returns proxy 404 response for /open-banking/v1.1/accounts with invalid session', (done) => {
+    request(app)
+      .get('/open-banking/v1.1/transactions')
+      .set('Accept', 'application/json')
+      .set('authorization', 'bar')
       .end((err, res) => {
         assert.equal(res.status, 404);
         done();
