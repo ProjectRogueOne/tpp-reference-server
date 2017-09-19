@@ -9,6 +9,7 @@ process.env.AUTHORIZATION = authorization;
 process.env.X_FAPI_FINANCIAL_ID = xFapiFinancialId;
 
 const { app } = require('../app/index.js');
+const { session } = require('../app/session.js');
 const assert = require('assert');
 
 const nock = require('nock');
@@ -82,9 +83,11 @@ describe('Session Deletion', () => {
 
 describe('Proxy', () => {
   it('returns proxy 200 response for /open-banking/v1.1/accounts', (done) => {
+    session.setSession('foo');
     request(app)
       .get('/open-banking/v1.1/accounts')
       .set('Accept', 'application/json')
+      .set('authorization', 'foo')
       .end((err, res) => {
         assert.equal(res.status, 200);
         assert.equal(res.body.hi, 'ya');

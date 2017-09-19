@@ -2,13 +2,11 @@ const uuidv1 = require('uuid/v1'); // Timestamp based UUID
 const log = require('debug')('log');
 
 const session = (() => {
-  // TODO - Persistence Store ?
   const sessionStore = {};
 
   const makeSession = (req, res) => {
     const mySid = uuidv1();
     log(` New Session ID is ${mySid}`);
-
     sessionStore[mySid] = mySid;
 
     res.setHeader('Content-Type', 'application/json');
@@ -26,6 +24,7 @@ const session = (() => {
       delete sessionStore[sid];
       msg = `Deleted Session ID  + ${sid}`;
     } else {
+      // return res.status(204);
       sid = '';
     }
     res.setHeader('Content-Type', 'application/json');
@@ -37,10 +36,22 @@ const session = (() => {
     res.send(JSON.stringify(sessionStore));
   };
 
+  /* eslint-disable */
+  const getSessions = () => {
+    return sessionStore;
+  };
+  /* eslint-enable */
+
+  const setSession = (sid) => {
+    sessionStore[sid] = sid;
+  };
+
   return {
     makeSession,
     destroySession,
     check,
+    getSessions,
+    setSession,
   };
 })();
 
