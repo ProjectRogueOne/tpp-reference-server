@@ -18,13 +18,15 @@ const session = (() => {
   };
 
   const destroySession = (req, res) => {
-    const sid = req.headers['authorization'];
+    let sid = req.headers['authorization'];
     let msg = 'No Session Deleted';
 
     if (sid && sessionStore[sid]) {
       log(` destroying sid ${sid}`);
       delete sessionStore[sid];
       msg = `Deleted Session ID  + ${sid}`;
+    } else {
+      sid = '';
     }
     res.setHeader('Content-Type', 'application/json');
     res.status(200).send(JSON.stringify({ msg, sid }));

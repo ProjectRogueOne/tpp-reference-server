@@ -51,19 +51,29 @@ describe('Session Deletion', () => {
       .get('/session/make')
       .set('Accept', 'application/json')
       .end((err, res) => {
-        sid = res.body.sid;
+        sid = res.body.sid; // eslint-disable-line
         done();
       });
   });
 
-  xit('destroys a session at /session/delete', (done) => {
+  xit('destroys a valid session at /session/delete', (done) => {
     request(app)
       .get('/session/delete')
       .set('Accept', 'application/json')
       .set('authorization', sid)
       .end((err, res) => {
-        const delSid = res.body.sid;
-        assert.equal(delSid, sid);
+        assert.equal(res.body.sid, sid);
+        done();
+      });
+  });
+
+  it('does not destroy an invalid session at /session/delete', (done) => {
+    request(app)
+      .get('/session/delete')
+      .set('Accept', 'application/json')
+      .set('authorization', 'jkaghrtegdkhsugf')
+      .end((err, res) => {
+        assert.equal(res.body.sid, '');
         done();
       });
   });
