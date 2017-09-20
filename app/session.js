@@ -4,27 +4,43 @@ const log = require('debug')('log');
 const session = (() => {
   const sessionStore = {};
 
-  const makeSession = (req, res) => {
+  const setSession = (sid) => {
+    sessionStore[sid] = sid;
+  };
+
+  const destroySession = (sid) => {
+    if (sid && sessionStore[sid]) {
+      delete sessionStore[sid];
+      return sid;
+    }
+    return null;
+  };
+
+  const getNewSid = () => {
     const mySid = uuidv1();
-    log(` New Session ID is ${mySid}`);
-    sessionStore[mySid] = mySid;
-
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ sid: mySid }));
-
+    setSession(mySid);
     return mySid;
   };
 
-  const destroySession = (req, res) => {
-    let sid = req.headers['authorization'];
-    let msg = 'No Session Deleted';
+  const sendNewSession = (req, res) => {
+    const sid = getNewSid();
+    log(` New Session ID is ${sid}`);
 
-    if (sid && sessionStore[sid]) {
-      log(` destroying sid ${sid}`);
-      delete sessionStore[sid];
+    res.setHeader('Content-Type', 'application/json');
+    res.send(JSON.stringify({ sid }));
+
+    return sid;
+  };
+
+  const handleDestroySessionRequest = (req, res) => {
+    let sid = req.headers['authorization'];
+    let msg;
+
+    if (destroySession(sid)) {
+      log(`destroying sid ${sid}`);
       msg = `Deleted Session ID  + ${sid}`;
     } else {
-      // return res.status(204);
+      msg = 'No Session Deleted';
       sid = '';
     }
     res.setHeader('Content-Type', 'application/json');
@@ -42,16 +58,13 @@ const session = (() => {
   };
   /* eslint-enable */
 
-  const setSession = (sid) => {
-    sessionStore[sid] = sid;
-  };
-
   return {
-    makeSession,
-    destroySession,
+    sendNewSession,
+    handleDestroySessionRequest,
     check,
     getSessions,
     setSession,
+    getNewSid,
   };
 })();
 
