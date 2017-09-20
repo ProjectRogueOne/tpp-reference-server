@@ -40,12 +40,14 @@ nock(/example\.com/, noAuthHeaders)
   .get('/open-banking/v1.1/transactions')
   .reply(404);
 
+const login = application => request(application)
+  .post('/login')
+  .set('Accept', 'x-www-form-urlencoded')
+  .send({ u: 'alice', p: 'factor' });
+
 describe('Session Creation (Login)', () => {
   it('returns a guid in the body as a json payload for /login', (done) => {
-    request(app)
-      .post('/login')
-      .set('Accept', 'x-www-form-urlencoded')
-      .send({ u: 'alice', p: 'factor' })
+    login(app)
       .end((err, res) => {
         const mySid = res.body.sid;
         const isGuid = (mySid.length === 36);
@@ -67,18 +69,20 @@ describe('Session Creation (Login)', () => {
 });
 
 describe('Session Deletion (Logout)', () => {
-  const sid = 'foo';
+  it('destroys a valid session at /logout', (done) => {
+    login(app).end((err, res) => {
+      const sessionId = res.body.sid;
 
-  xit('destroys a valid session at /logout', (done) => {
-    session.setSession(sid);
-    request(app)
-      .post('/logout')
-      .set('Accept', 'application/json')
-      .set('authorization', sid)
-      .end((err, res) => {
-        assert.equal(res.body.sid, sid);
-        done();
-      });
+      request(app)
+        .post('/logout')
+        .set('Accept', 'application/json')
+        .set('authorization', sessionId)
+        .end((e, r) => {
+          assert.equal(r.status, 200);
+          assert.equal(r.body.sid, sessionId);
+          done();
+        });
+    });
   });
 
   it('does not destroy an invalid session at /logout', (done) => {
@@ -97,16 +101,20 @@ describe('Session Deletion (Logout)', () => {
 describe('Proxy', () => {
   session.setSession('foo');
 
-  xit('returns proxy 200 response for /open-banking/v1.1/accounts with valid session', (done) => {
-    request(app)
-      .get('/open-banking/v1.1/accounts')
-      .set('Accept', 'application/json')
-      .set('authorization', 'foo')
-      .end((err, res) => {
-        assert.equal(res.status, 200);
-        assert.equal(res.body.hi, 'ya');
-        done();
-      });
+  it('returns proxy 200 response for /open-banking/v1.1/accounts with valid session', (done) => {
+    login(app).end((err, res) => {
+      const sessionId = res.body.sid;
+
+      request(app)
+        .get('/open-banking/v1.1/accounts')
+        .set('Accept', 'application/json')
+        .set('authorization', sessionId)
+        .end((e, r) => {
+          assert.equal(r.status, 200);
+          assert.equal(r.body.hi, 'ya');
+          done();
+        });
+    });
   });
 
   it('returns proxy 404 reponse for /open-banking/non-existing', (done) => {
@@ -131,15 +139,17 @@ describe('Proxy', () => {
       });
   });
 
-
+  // pending as not yet implemented
   xit('returns proxy 404 response for /open-banking/v1.1/accounts with invalid session', (done) => {
-    request(app)
-      .get('/open-banking/v1.1/transactions')
-      .set('Accept', 'application/json')
-      .set('authorization', 'bar')
-      .end((err, res) => {
-        assert.equal(res.status, 404);
-        done();
-      });
+    login(app).end(() => {
+      request(app)
+        .get('/open-banking/v1.1/accounts')
+        .set('Accept', 'application/json')
+        .set('authorization', 'invalid-token')
+        .end((e, r) => {
+          assert.equal(r.status, 404);
+          done();
+        });
+    });
   });
 });

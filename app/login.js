@@ -35,6 +35,7 @@ const login = (() => {
     log(`in logout sid is ${sid}`);
     if (session.destroySession(sid)) {
       log(`destroying sid ${sid}`);
+      res.setHeader('Content-Type', 'application/json');
       res.status(200).send(JSON.stringify({ sid }));
     } else {
       res.sendStatus(204);
