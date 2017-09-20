@@ -40,11 +40,12 @@ nock(/example\.com/, noAuthHeaders)
   .get('/open-banking/v1.1/transactions')
   .reply(404);
 
-describe('Session Creation', () => {
-  it('returns a guid in the body as a json payload for /session/make', (done) => {
+describe('Session Creation (Login)', () => {
+  it('returns a guid in the body as a json payload for /login', (done) => {
     request(app)
-      .get('/session/make')
-      .set('Accept', 'application/json')
+      .post('/login')
+      .set('Accept', 'x-www-form-urlencoded')
+      .send({ u: 'alice', p: 'factor' })
       .end((err, res) => {
         const mySid = res.body.sid;
         const isGuid = (mySid.length === 36);
@@ -54,23 +55,13 @@ describe('Session Creation', () => {
   });
 });
 
+describe('Session Deletion (Logout)', () => {
+  const sid = 'foo';
 
-describe('Session Deletion', () => {
-  let sid = '';
-
-  before((done) => {
+  xit('destroys a valid session at /logout', (done) => {
+    session.setSession(sid);
     request(app)
-      .get('/session/make')
-      .set('Accept', 'application/json')
-      .end((err, res) => {
-        sid = res.body.sid; // eslint-disable-line
-        done();
-      });
-  });
-
-  xit('destroys a valid session at /session/delete', (done) => {
-    request(app)
-      .get('/session/delete')
+      .post('/logout')
       .set('Accept', 'application/json')
       .set('authorization', sid)
       .end((err, res) => {
@@ -79,13 +70,13 @@ describe('Session Deletion', () => {
       });
   });
 
-  it('does not destroy an invalid session at /session/delete', (done) => {
+  it('does not destroy an invalid session at /logout', (done) => {
     request(app)
-      .get('/session/delete')
+      .get('/logout')
       .set('Accept', 'application/json')
       .set('authorization', 'jkaghrtegdkhsugf')
       .end((err, res) => {
-        assert.equal(res.body.sid, '');
+        assert.equal(res.status, 204);
         done();
       });
   });
@@ -95,7 +86,7 @@ describe('Session Deletion', () => {
 describe('Proxy', () => {
   session.setSession('foo');
 
-  it('returns proxy 200 response for /open-banking/v1.1/accounts with valid session', (done) => {
+  xit('returns proxy 200 response for /open-banking/v1.1/accounts with valid session', (done) => {
     request(app)
       .get('/open-banking/v1.1/accounts')
       .set('Accept', 'application/json')

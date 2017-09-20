@@ -13,8 +13,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/login', login.authenticate);
 app.use('/logout', login.logout);
 app.use('/open-banking', proxyMiddleware);
-app.use('/session/make', session.sendNewSession);
-app.use('/session/delete', session.handleDestroySessionRequest);
 app.use('/session/check', session.check);
 
 exports.app = app;

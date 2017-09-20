@@ -1,5 +1,4 @@
 const uuidv1 = require('uuid/v1'); // Timestamp based UUID
-const log = require('debug')('log');
 
 const session = (() => {
   const sessionStore = {};
@@ -22,31 +21,6 @@ const session = (() => {
     return mySid;
   };
 
-  const sendNewSession = (req, res) => {
-    const sid = getNewSid();
-    log(` New Session ID is ${sid}`);
-
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ sid }));
-
-    return sid;
-  };
-
-  const handleDestroySessionRequest = (req, res) => {
-    let sid = req.headers['authorization'];
-    let msg;
-
-    if (destroySession(sid)) {
-      log(`destroying sid ${sid}`);
-      msg = `Deleted Session ID  + ${sid}`;
-    } else {
-      msg = 'No Session Deleted';
-      sid = '';
-    }
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).send(JSON.stringify({ msg, sid }));
-  };
-
   const check = (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(sessionStore));
@@ -59,12 +33,11 @@ const session = (() => {
   /* eslint-enable */
 
   return {
-    sendNewSession,
-    handleDestroySessionRequest,
+    setSession,
+    destroySession,
+    getNewSid,
     check,
     getSessions,
-    setSession,
-    getNewSid,
   };
 })();
 

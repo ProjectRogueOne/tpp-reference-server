@@ -32,11 +32,12 @@ const login = (() => {
 
   const logout = (req, res) => {
     const sid = req.headers['authorization'];
+    log(`in logout sid is ${sid}`);
     if (session.destroySession(sid)) {
       log(`destroying sid ${sid}`);
       res.status(200).send(JSON.stringify({ sid }));
     } else {
-      res.send(204);
+      res.sendStatus(204);
     }
   };
 
