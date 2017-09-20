@@ -53,6 +53,17 @@ describe('Session Creation (Login)', () => {
         done();
       });
   });
+
+  it('returns an unauthorised status for an invalid set of credentials at /login', (done) => {
+    request(app)
+      .post('/login')
+      .set('Accept', 'x-www-form-urlencoded')
+      .send({ u: 'foo', p: 'baarx' })
+      .end((err, res) => {
+        assert.equal(res.status, 401);
+        done();
+      });
+  });
 });
 
 describe('Session Deletion (Logout)', () => {
