@@ -43,7 +43,7 @@ nock(/example\.com/)
 const login = application => request(application)
   .post('/login')
   .set('Accept', 'x-www-form-urlencoded')
-  .send({ u: 'alice', p: 'factor' });
+  .send({ u: 'alice', p: 'wonderland' });
 
 const loginFail = application => request(application)
   .post('/login')

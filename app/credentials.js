@@ -1,7 +1,7 @@
 
 const credentials = {
   alice: {
-    p: 'factor',
+    p: 'wonderland',
   },
 };
 
