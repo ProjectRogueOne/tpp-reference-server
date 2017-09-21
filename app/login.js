@@ -17,6 +17,7 @@ const checkCredentials = (u, p) => {
 
 const login = (() => {
   const authenticate = (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     let sid = '';
     const { u } = req.body;
     const { p } = req.body;
@@ -24,7 +25,6 @@ const login = (() => {
     if (allow) {
       sid = session.getNewSid();
       res.setHeader('Content-Type', 'application/json');
-      res.setHeader('Access-Control-Allow-Origin', '*');
       res.status(200).send(JSON.stringify({ sid }));
     } else {
       res.status(401).send();
@@ -32,6 +32,7 @@ const login = (() => {
   };
 
   const logout = (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     const sid = req.headers['authorization'];
     log(`in logout sid is ${sid}`);
     if (session.destroySession(sid)) {

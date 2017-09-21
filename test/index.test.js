@@ -60,6 +60,7 @@ describe('Session Creation (Login)', () => {
         done();
       });
   });
+
   it('returns a guid in the body as a json payload for /login', (done) => {
     login(app)
       .end((err, res) => {
@@ -83,6 +84,18 @@ describe('Session Creation (Login)', () => {
 });
 
 describe('Session Deletion (Logout)', () => {
+  it('returns "Access-Control-Allow-Origin: *" header', (done) => {
+    login(app).end(() => {
+      request(app)
+        .post('/logout')
+        .end((e, r) => {
+          const header = r.headers['access-control-allow-origin'];
+          assert.equal(header, '*');
+          done();
+        });
+    });
+  });
+
   it('destroys a valid session at /logout', (done) => {
     login(app).end((err, res) => {
       const sessionId = res.body.sid;
