@@ -1,12 +1,14 @@
 if (!process.env.DEBUG) process.env.DEBUG = 'error,log';
 
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
 const { session } = require('./session');
 const { login } = require('./login');
 const { proxyMiddleware } = require('./proxy.js');
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
