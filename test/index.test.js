@@ -52,6 +52,14 @@ const loginFail = application => request(application)
 
 
 describe('Session Creation (Login)', () => {
+  it('returns "Access-Control-Allow-Origin: *" header', (done) => {
+    login(app)
+      .end((err, res) => {
+        const header = res.headers['access-control-allow-origin'];
+        assert.equal(header, '*');
+        done();
+      });
+  });
   it('returns a guid in the body as a json payload for /login', (done) => {
     login(app)
       .end((err, res) => {
