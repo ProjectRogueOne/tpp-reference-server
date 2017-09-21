@@ -28,6 +28,11 @@ Run tests continuously on file changes in watch mode via:
 npm run test:watch
 ```
 
+
+Manual Testing  
+Sending Form Data to login with POstman - use `x-www-form-urlencoded`
+
+
 ### eslint
 
 Run eslint checks with:
