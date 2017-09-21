@@ -39,10 +39,17 @@ const proxyReqOptDecorator = (options, req) => {
   return newOptions;
 };
 
+// Set body to empty string to avoid this error on r/w server:
+// `Error: GET /open-banking/v1.1/accounts does not allow body content`
+const proxyReqBodyDecorator = (bodyContent, srcReq) => { // eslint-disable-line
+  const body = '';
+  return body;
+};
 
 const proxyMiddleware = proxy(ASPSP_READWRITE_HOST, {
   proxyReqPathResolver,
   proxyReqOptDecorator,
+  proxyReqBodyDecorator,
 });
 
 exports.proxyMiddleware = proxyMiddleware;
