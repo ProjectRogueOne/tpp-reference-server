@@ -23,7 +23,7 @@ const requestHeaders = {
 
 const noAuthHeaders = {
   reqheaders: {
-    'authorization': '',
+    /* 'authorization': 'invalid-token',  undefined so we do not specify it */
     'x-fapi-financial-id': xFapiFinancialId,
   },
 };
@@ -32,18 +32,24 @@ nock(/example\.com/, requestHeaders)
   .get('/open-banking/v1.1/accounts')
   .reply(200, { hi: 'ya' });
 
-nock(/example\.com/)
-  .get('/open-banking/non-existing')
-  .reply(404);
-
 nock(/example\.com/, noAuthHeaders)
   .get('/open-banking/v1.1/transactions')
+  .reply(401);
+
+nock(/example\.com/)
+  .get('/open-banking/non-existing')
   .reply(404);
 
 const login = application => request(application)
   .post('/login')
   .set('Accept', 'x-www-form-urlencoded')
   .send({ u: 'alice', p: 'factor' });
+
+const loginFail = application => request(application)
+  .post('/login')
+  .set('Accept', 'x-www-form-urlencoded')
+  .send({ u: 'xxy', p: 'zzzd' });
+
 
 describe('Session Creation (Login)', () => {
   it('returns a guid in the body as a json payload for /login', (done) => {
@@ -139,15 +145,15 @@ describe('Proxy', () => {
       });
   });
 
-  // pending as not yet implemented
-  xit('returns proxy 404 response for /open-banking/v1.1/accounts with invalid session', (done) => {
-    login(app).end(() => {
+  it('returns proxy 401 unauthorised response for /open-banking/v1.1/transactions with invalid (missing) session', (done) => {
+    loginFail(app).end(() => {
+      // const sessionId = res.body.sid; // Undefined - we do not pass it
       request(app)
-        .get('/open-banking/v1.1/accounts')
+        .get('/open-banking/v1.1/transactions')
         .set('Accept', 'application/json')
-        .set('authorization', 'invalid-token')
+        // .set('authorization', sessionId) // undefined we do not pass it
         .end((e, r) => {
-          assert.equal(r.status, 404);
+          assert.equal(r.status, 401);
           done();
         });
     });
