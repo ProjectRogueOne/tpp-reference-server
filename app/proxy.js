@@ -29,8 +29,13 @@ const proxyReqPathResolver = (request) => {
 
 const proxyReqOptDecorator = (options, req) => {
   const newOptions = options;
-  newOptions.headers['authorization'] = getAuthFromSession(req.headers.authorization);
+  const sid = req.headers.authorization;
+  const auth = getAuthFromSession(sid);
+  newOptions.headers['authorization'] = auth;
   newOptions.headers['x-fapi-financial-id'] = xFapiFinancialId;
+  log(`  session: ${sid}`);
+  log(`  authorization: ${auth}`);
+  log(`  x-fapi-financial-id: ${xFapiFinancialId}`);
   return newOptions;
 };
 
