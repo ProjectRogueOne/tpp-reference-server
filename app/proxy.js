@@ -29,15 +29,27 @@ const proxyReqPathResolver = (request) => {
 
 const proxyReqOptDecorator = (options, req) => {
   const newOptions = options;
-  newOptions.headers['authorization'] = getAuthFromSession(req.headers.authorization);
+  const sid = req.headers.authorization;
+  const auth = getAuthFromSession(sid);
+  newOptions.headers['authorization'] = auth;
   newOptions.headers['x-fapi-financial-id'] = xFapiFinancialId;
+  log(`  session: ${sid}`);
+  log(`  authorization: ${auth}`);
+  log(`  x-fapi-financial-id: ${xFapiFinancialId}`);
   return newOptions;
 };
 
+// Set body to empty string to avoid this error on r/w server:
+// `Error: GET /open-banking/v1.1/accounts does not allow body content`
+const proxyReqBodyDecorator = (bodyContent, srcReq) => { // eslint-disable-line
+  const body = '';
+  return body;
+};
 
 const proxyMiddleware = proxy(ASPSP_READWRITE_HOST, {
   proxyReqPathResolver,
   proxyReqOptDecorator,
+  proxyReqBodyDecorator,
 });
 
 exports.proxyMiddleware = proxyMiddleware;

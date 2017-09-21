@@ -24,6 +24,7 @@ const login = (() => {
     if (allow) {
       sid = session.getNewSid();
       res.setHeader('Content-Type', 'application/json');
+      res.setHeader('Access-Control-Allow-Origin', '*');
       res.status(200).send(JSON.stringify({ sid }));
     } else {
       res.status(401).send();
