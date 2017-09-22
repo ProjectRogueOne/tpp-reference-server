@@ -14,6 +14,22 @@ Install npm packages:
 npm install
 ```
 
+Prerequisite - Redis should be installed ( Work In Progress )
+
+The most *flexible* way to get Redis running on your host machine is to
+ use a docker instance of it.  This works cross platform (e.g. Windows / Mac)
+You'll need to have Docker installed and running; for the latest version 
+go to https://www.docker.com/products/docker-toolbox
+
+
+Once Docker is installed you can install the Docker Redis Instance through 
+the Kitematic interface and set it to run.
+
+
+Then set the environment variables `REDIS_PORT` and `REDIS_HOST` 
+as per docker redis instance.
+
+
 ## Testing
 
 Run unit tests with:

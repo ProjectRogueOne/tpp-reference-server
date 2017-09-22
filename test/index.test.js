@@ -122,6 +122,10 @@ describe('Session Deletion (Logout)', () => {
         done();
       });
   });
+
+  after(() => {
+    session.deleteAll();
+  });
 });
 
 
@@ -178,5 +182,9 @@ describe('Proxy', () => {
           done();
         });
     });
+  });
+
+  after(() => {
+    session.deleteAll();
   });
 });

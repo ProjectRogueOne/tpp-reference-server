@@ -13,14 +13,14 @@ const log = require('debug')('log');
  * @param sid
  * @returns {*}
  */
-const getAuthFromSession = (sid) => {
-  const sessions = session.getSessions();
-  if (sid && sessions[sid] === sid) {
-    return authorization;
-  }
-  return '';
+const getAuthFromSession = (sid, cb) => {
+  session.getSessions((err, sessions) => {
+    if (sid && sessions[sid] === sid) {
+      return cb(authorization);
+    }
+    return cb('');
+  });
 };
-
 
 const proxyReqPathResolver = (request) => {
   log(request.path);
@@ -30,13 +30,16 @@ const proxyReqPathResolver = (request) => {
 const proxyReqOptDecorator = (options, req) => {
   const newOptions = options;
   const sid = req.headers.authorization;
-  const auth = getAuthFromSession(sid);
-  newOptions.headers['authorization'] = auth;
-  newOptions.headers['x-fapi-financial-id'] = xFapiFinancialId;
-  log(`  session: ${sid}`);
-  log(`  authorization: ${auth}`);
-  log(`  x-fapi-financial-id: ${xFapiFinancialId}`);
-  return newOptions;
+  return new Promise((resolve) => {
+    getAuthFromSession(sid, (auth) => {
+      newOptions.headers['authorization'] = auth;
+      newOptions.headers['x-fapi-financial-id'] = xFapiFinancialId;
+      log(`  session: ${sid}`);
+      log(`  authorization: ${auth}`);
+      log(`  x-fapi-financial-id: ${xFapiFinancialId}`);
+      resolve(newOptions);
+    });
+  });
 };
 
 // Set body to empty string to avoid this error on r/w server:

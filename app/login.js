@@ -35,13 +35,15 @@ const login = (() => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     const sid = req.headers['authorization'];
     log(`in logout sid is ${sid}`);
-    if (session.destroySession(sid)) {
-      log(`destroying sid ${sid}`);
-      res.setHeader('Content-Type', 'application/json');
-      res.status(200).send(JSON.stringify({ sid }));
-    } else {
-      res.sendStatus(204);
-    }
+    session.destroySession(sid, (sidConf) => {
+      if (sidConf) {
+        log(`destroying sid ${sidConf}`);
+        res.setHeader('Content-Type', 'application/json');
+        res.status(200).send(JSON.stringify({ sid: sidConf }));
+      } else {
+        res.sendStatus(204);
+      }
+    });
   };
 
   return {
