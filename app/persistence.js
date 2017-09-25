@@ -1,10 +1,21 @@
 const redis = require('redis');
 const log = require('debug')('log');
+const url = require('url');
 
-const redisPort = process.env.REDIS_PORT || 6379;
-const redisHost = process.env.REDIS_HOST || 'localhost';
+let redisPort = process.env.REDIS_PORT || 6379;
+let redisHost = process.env.REDIS_HOST || 'localhost';
+let client;
 
-const client = redis.createClient(redisPort, redisHost);
+if (process.env.REDISTOGO_URL) {
+  const rtg = url.parse(process.env.REDISTOGO_URL);
+  redisPort = rtg.port;
+  redisHost = rtg.hostname;
+  client = redis.createClient(redisPort, redisHost);
+  client.auth(rtg.auth.split(':')[1]);
+} else {
+  client = redis.createClient(redisPort, redisHost);
+}
+
 const noop = () => {};
 
 client.on('error', (err) => {
