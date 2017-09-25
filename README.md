@@ -96,6 +96,8 @@ heroku login
 
 heroku create --region eu <newname>
 
+heroku addons:create redistogo # or any other redis add-on
+
 heroku config:set ASPSP_READWRITE_HOST=example.com
 heroku config:set AUTHORIZATION=<mock-token>
 heroku config:set X_FAPI_FINANCIAL_ID=<mock-id>
