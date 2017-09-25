@@ -14,21 +14,21 @@ Install npm packages:
 npm install
 ```
 
-Prerequisite - Redis should be installed ( Work In Progress )
+Install [redis](https://redis.io). On Mac OSX you can install via [homebrew](https://brew.sh):
 
-The most *flexible* way to get Redis running on your host machine is to
- use a docker instance of it.  This works cross platform (e.g. Windows / Mac)
-You'll need to have Docker installed and running; for the latest version 
-go to https://www.docker.com/products/docker-toolbox
+```sh
+brew install redis
+```
 
+If not installing via homebrew, you can get Redis
+running on your host machine by using a docker instance
+of it.  This works cross platform (e.g. Windows / Mac).
+You'll need to have Docker installed and running; for the latest version go to https://www.docker.com/products/docker-toolbox
 
-Once Docker is installed you can install the Docker Redis Instance through 
-the Kitematic interface and set it to run.
+Once Docker is installed you can install the Docker Redis Instance through the [Kitematic](https://kitematic.com)
+interface and set it to run.
 
-
-Then set the environment variables `REDIS_PORT` and `REDIS_HOST` 
-as per docker redis instance.
-
+Then set the environment variables `REDIS_PORT` and `REDIS_HOST` as per docker redis instance.
 
 ## Testing
 
@@ -84,6 +84,8 @@ Set debug log levels using `DEBUG` env var.
 Set API host using `ASPSP_READWRITE_HOST` env var.
 Set hardcoded auth token using `AUTHORIZATION` env var.
 Set hardcoded x-fapi-financial-id using `X_FAPI_FINANCIAL_ID` env var.
+Set the environment variables `REDIS_PORT` and `REDIS_HOST`
+as per your redis instance.
 
 ## Deploy to heroku
 
