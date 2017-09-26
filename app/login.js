@@ -26,6 +26,8 @@ const login = (() => {
       sid = session.getNewSid();
       res.setHeader('Content-Type', 'application/json');
       res.status(200).send(JSON.stringify({ sid }));
+    } else if (u === 'trigger-error') {
+      res.status(500).send();
     } else {
       res.status(401).send();
     }
