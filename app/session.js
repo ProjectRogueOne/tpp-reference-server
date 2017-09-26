@@ -1,46 +1,64 @@
 const uuidv1 = require('uuid/v1'); // Timestamp based UUID
+const { store } = require('./persistence.js');
 const log = require('debug')('log');
 
 const session = (() => {
-  // TODO - Persistence Store ?
-  const sessionStore = {};
+  const setSession = (sid) => {
+    store.setSession(sid, sid);
+  };
 
-  const makeSession = (req, res) => {
+  const destroySession = (sid, cb) => {
+    const sessHandler = (err, reply) => {
+      log(`in sessHandler reply is ${reply}`);
+      if (reply) {
+        store.delSession(reply); // Async but we kinda don't care :-/
+        return cb(reply);
+      }
+      return cb(null);
+    };
+    store.getSession(sid, sessHandler);
+  };
+
+  const getNewSid = () => {
     const mySid = uuidv1();
-    log(` New Session ID is ${mySid}`);
-
-    sessionStore[mySid] = mySid;
-
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify({ sid: mySid }));
-
+    setSession(mySid);
     return mySid;
   };
 
-  const destroySession = (req, res) => {
-    let sid = req.headers['authorization'];
-    let msg = 'No Session Deleted';
-
-    if (sid && sessionStore[sid]) {
-      log(` destroying sid ${sid}`);
-      delete sessionStore[sid];
-      msg = `Deleted Session ID  + ${sid}`;
-    } else {
-      sid = '';
-    }
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).send(JSON.stringify({ msg, sid }));
+  /* eslint-disable */
+  const getSessions = (cb) => {
+    store.getAllSessions((err, res) => {
+      const sess = {};
+      if (res && res.length) {
+        res.map((sid) => sess[sid] = sid)
+      }
+      cb(err, sess)
+    });
   };
+  /* eslint-enable */
 
   const check = (req, res) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.send(JSON.stringify(sessionStore));
+    getSessions((err, sessions) => {
+      if (err) {
+        res.sendStatus(500);
+      } else {
+        res.setHeader('Content-Type', 'application/json');
+        res.send(JSON.stringify(sessions));
+      }
+    });
+  };
+
+  const deleteAll = () => {
+    store.deleteAll();
   };
 
   return {
-    makeSession,
+    setSession,
     destroySession,
+    getNewSid,
     check,
+    getSessions,
+    deleteAll,
   };
 })();
 

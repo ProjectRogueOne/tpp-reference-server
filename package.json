@@ -7,9 +7,12 @@
     "node": "8.4.0"
   },
   "dependencies": {
+    "body-parser": "^1.18.1",
+    "cors": "^2.8.4",
     "debug": "^3.0.1",
     "express": "^4.15.4",
     "express-http-proxy": "^1.0.6",
+    "redis": "^2.8.0",
     "request": "^2.81.0",
     "uuid": "^3.1.0"
   },
@@ -29,7 +32,8 @@
     "test": "mocha",
     "test:watch": "mocha --watch",
     "test:debug": "node --inspect node_modules/mocha/bin/_mocha --watch --no-timeouts",
-    "eslint": "node ./node_modules/eslint/bin/eslint.js ."
+    "eslint": "node ./node_modules/eslint/bin/eslint.js .",
+    "checks": "node ./node_modules/eslint/bin/eslint.js . && mocha"
   },
   "repository": {
     "type": "git",
