@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { session } = require('./session');
+const { requireAuthorization } = require('./authorization');
 const { login } = require('./login');
 const { proxyMiddleware } = require('./proxy.js');
 
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/login', login.authenticate);
 app.use('/logout', login.logout);
+app.all('/open-banking/*', requireAuthorization);
 app.use('/open-banking', proxyMiddleware);
 app.use('/session/check', session.check);
 

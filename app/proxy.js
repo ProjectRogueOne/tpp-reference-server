@@ -1,26 +1,11 @@
 if (!process.env.DEBUG) process.env.DEBUG = 'error,log';
 
 const proxy = require('express-http-proxy');
-const { session } = require('./session');
+const { getAuthFromSession } = require('./authorization');
 
 const { ASPSP_READWRITE_HOST } = process.env;
-const authorization = process.env.AUTHORIZATION;
 const xFapiFinancialId = process.env.X_FAPI_FINANCIAL_ID;
 const log = require('debug')('log');
-
-/**
- * @description Only return the authorization if there is a valid session
- * @param sid
- * @returns {*}
- */
-const getAuthFromSession = (sid, cb) => {
-  session.getSessions((err, sessions) => {
-    if (sid && sessions[sid] === sid) {
-      return cb(authorization);
-    }
-    return cb('');
-  });
-};
 
 const proxyReqPathResolver = (request) => {
   log(request.path);
