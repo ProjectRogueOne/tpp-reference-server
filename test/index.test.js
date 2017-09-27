@@ -81,6 +81,17 @@ describe('Session Creation (Login)', () => {
         done();
       });
   });
+
+  it('returns 500 error status for username "trigger-error"', (done) => {
+    request(app)
+      .post('/login')
+      .set('Accept', 'x-www-form-urlencoded')
+      .send({ u: 'trigger-error', p: 'baarx' })
+      .end((err, res) => {
+        assert.equal(res.status, 500);
+        done();
+      });
+  });
 });
 
 describe('Session Deletion (Logout)', () => {
