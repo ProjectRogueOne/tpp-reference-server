@@ -33,7 +33,11 @@ nock(/example\.com/, requestHeaders)
   .reply(200, { hi: 'ya' });
 
 nock(/example\.com/, noAuthHeaders)
-  .get('/open-banking/v1.1/transactions')
+  .get('/open-banking/v1.1/balances')
+  .reply(401);
+
+nock(/example\.com/, noAuthHeaders)
+  .get('/open-banking/v1.1/products')
   .reply(401);
 
 nock(/example\.com/)
@@ -44,12 +48,6 @@ const login = application => request(application)
   .post('/login')
   .set('Accept', 'x-www-form-urlencoded')
   .send({ u: 'alice', p: 'wonderland' });
-
-const loginFail = application => request(application)
-  .post('/login')
-  .set('Accept', 'x-www-form-urlencoded')
-  .send({ u: 'xxy', p: 'zzzd' });
-
 
 describe('Session Creation (Login)', () => {
   it('returns "Access-Control-Allow-Origin: *" header', (done) => {
@@ -181,13 +179,24 @@ describe('Proxy', () => {
       });
   });
 
-  it('returns proxy 401 unauthorised response for /open-banking/v1.1/transactions with invalid (missing) session', (done) => {
-    loginFail(app).end(() => {
-      // const sessionId = res.body.sid; // Undefined - we do not pass it
+  it('returns proxy 401 unauthorised response for /open-banking/v1.1/balances with missing authorization token', (done) => {
+    login(app).end(() => {
       request(app)
-        .get('/open-banking/v1.1/transactions')
+        .get('/open-banking/v1.1/balances')
         .set('Accept', 'application/json')
-        // .set('authorization', sessionId) // undefined we do not pass it
+        .end((e, r) => {
+          assert.equal(r.status, 401);
+          done();
+        });
+    });
+  });
+
+  it('returns proxy 401 unauthorised response for /open-banking/v1.1/products with expired authorization token', (done) => {
+    login(app).end(() => {
+      request(app)
+        .get('/open-banking/v1.1/products')
+        .set('Accept', 'application/json')
+        .set('authorization', 'expired-token')
         .end((e, r) => {
           assert.equal(r.status, 401);
           done();
