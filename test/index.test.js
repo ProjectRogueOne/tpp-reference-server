@@ -21,24 +21,9 @@ const requestHeaders = {
   },
 };
 
-const noAuthHeaders = {
-  reqheaders: {
-    /* 'authorization': 'invalid-token',  undefined so we do not specify it */
-    'x-fapi-financial-id': xFapiFinancialId,
-  },
-};
-
 nock(/example\.com/, requestHeaders)
   .get('/open-banking/v1.1/accounts')
   .reply(200, { hi: 'ya' });
-
-nock(/example\.com/, noAuthHeaders)
-  .get('/open-banking/v1.1/balances')
-  .reply(401);
-
-nock(/example\.com/, noAuthHeaders)
-  .get('/open-banking/v1.1/products')
-  .reply(401);
 
 nock(/example\.com/)
   .get('/open-banking/non-existing')
@@ -158,28 +143,34 @@ describe('Proxy', () => {
   });
 
   it('returns proxy 404 reponse for /open-banking/non-existing', (done) => {
-    request(app)
-      .get('/open-banking/non-existing')
-      .set('Accept', 'application/json')
-      .set('authorization', 'foo')
-      .end((err, res) => {
-        assert.equal(res.status, 404);
-        done();
-      });
+    login(app).end((err, res) => {
+      const sessionId = res.body.sid;
+      request(app)
+        .get('/open-banking/non-existing')
+        .set('Accept', 'application/json')
+        .set('authorization', sessionId)
+        .end((e, r) => {
+          assert.equal(r.status, 404);
+          done();
+        });
+    });
   });
 
   it('should return 404 for path != /open-banking', (done) => {
-    request(app)
-      .get('/open-banking-invalid')
-      .set('Accept', 'application/json')
-      .set('authorization', 'foo')
-      .end((err, res) => {
-        assert.equal(res.status, 404);
-        done();
-      });
+    login(app).end((err, res) => {
+      const sessionId = res.body.sid;
+      request(app)
+        .get('/open-banking-invalid')
+        .set('Accept', 'application/json')
+        .set('authorization', sessionId)
+        .end((e, r) => {
+          assert.equal(r.status, 404);
+          done();
+        });
+    });
   });
 
-  it('returns proxy 401 unauthorised response for /open-banking/v1.1/balances with missing authorization token', (done) => {
+  it('returns proxy 401 unauthorised response for /open-banking/* with missing authorization header', (done) => {
     login(app).end(() => {
       request(app)
         .get('/open-banking/v1.1/balances')
@@ -191,12 +182,12 @@ describe('Proxy', () => {
     });
   });
 
-  it('returns proxy 401 unauthorised response for /open-banking/v1.1/products with expired authorization token', (done) => {
+  it('returns proxy 401 unauthorised response for /open-banking/* with invalid authorization header', (done) => {
     login(app).end(() => {
       request(app)
         .get('/open-banking/v1.1/products')
         .set('Accept', 'application/json')
-        .set('authorization', 'expired-token')
+        .set('authorization', 'invalid-token')
         .end((e, r) => {
           assert.equal(r.status, 401);
           done();
