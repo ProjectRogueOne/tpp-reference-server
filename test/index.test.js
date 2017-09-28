@@ -177,6 +177,8 @@ describe('Proxy', () => {
         .set('Accept', 'application/json')
         .end((e, r) => {
           assert.equal(r.status, 401);
+          const header = r.headers['access-control-allow-origin'];
+          assert.equal(header, '*');
           done();
         });
     });
@@ -190,6 +192,8 @@ describe('Proxy', () => {
         .set('authorization', 'invalid-token')
         .end((e, r) => {
           assert.equal(r.status, 401);
+          const header = r.headers['access-control-allow-origin'];
+          assert.equal(header, '*');
           done();
         });
     });
