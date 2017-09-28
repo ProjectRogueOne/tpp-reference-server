@@ -73,7 +73,8 @@ Or run with environment variables set on the command line:
 ```sh
 DEBUG=error,log \
   ASPSP_READWRITE_HOST=localhost:8001 \
-  OB_DIRECTORY_HOST=example.com \
+  OB_DIRECTORY_HOST=localhost:8001 \
+  OB_DIRECTORY_ACCESS_TOKEN=example-token \
   AUTHORIZATION=alice \
   X_FAPI_FINANCIAL_ID=abcbank \
   PORT=8003 \
@@ -85,6 +86,7 @@ Set debug log levels using `DEBUG` env var.
 Set API host using `ASPSP_READWRITE_HOST` env var.
 Set hardcoded auth token using `AUTHORIZATION` env var.
 Set OB Directory host using `OB_DIRECTORY_HOST` env var.
+Set OB Directory access_token using `OB_DIRECTORY_ACCESS_TOKEN` env var.
 Set hardcoded x-fapi-financial-id using `X_FAPI_FINANCIAL_ID` env var.
 Set the environment variables `REDIS_PORT` and `REDIS_HOST`
 as per your redis instance.
