@@ -21,12 +21,14 @@ const requireAuthorization = (req, res, next) => {
   if (sid) {
     getAuthFromSession(sid, (token) => {
       if (token.length === 0) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.status(401).send();
       } else {
         next();
       }
     });
   } else {
+    res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(401).send();
   }
 };
