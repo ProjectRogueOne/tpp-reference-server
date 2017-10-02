@@ -147,6 +147,8 @@ describe('Directory', () => {
         .end((e, r) => {
           assert.equal(r.status, 200);
           assert.equal(r.body.da, 'ta');
+          const header = r.headers['access-control-allow-origin'];
+          assert.equal(header, '*');
           done();
         });
     });
