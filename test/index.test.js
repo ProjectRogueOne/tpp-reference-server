@@ -5,7 +5,7 @@ const xFapiFinancialId = 'xyz';
 
 process.env.DEBUG = 'error';
 process.env.ASPSP_READWRITE_HOST = 'example.com';
-process.env.OB_DIRECTORY_HOST = 'example.com';
+process.env.OB_DIRECTORY_HOST = 'http://example.com';
 process.env.AUTHORIZATION = authorization;
 process.env.X_FAPI_FINANCIAL_ID = xFapiFinancialId;
 

@@ -73,7 +73,7 @@ Or run with environment variables set on the command line:
 ```sh
 DEBUG=error,log \
   ASPSP_READWRITE_HOST=localhost:8001 \
-  OB_DIRECTORY_HOST=localhost:8001 \
+  OB_DIRECTORY_HOST=http://localhost:8001 \
   OB_DIRECTORY_ACCESS_TOKEN=example-token \
   AUTHORIZATION=alice \
   X_FAPI_FINANCIAL_ID=abcbank \

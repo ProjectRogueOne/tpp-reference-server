@@ -16,10 +16,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/login', login.authenticate);
 app.use('/logout', login.logout);
-app.all('/open-banking/*', requireAuthorization);
-app.use('/open-banking', proxyMiddleware);
 app.all('/account-payment-service-providers', requireAuthorization);
 app.use('/account-payment-service-providers', OBAccountPaymentServiceProviders);
+app.all('/open-banking/*', requireAuthorization);
+app.use('/open-banking', proxyMiddleware);
 app.use('/session/check', session.check);
 
 exports.app = app;
