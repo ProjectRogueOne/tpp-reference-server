@@ -33,20 +33,23 @@ const store = (() => {
   };
 
   const getSession = (sid, cb) => {
+    const cbk = cb || noop;
     log(`in get session sid is ${sid}`);
-    client.get(sid, cb);
+    if (!sid) return cbk(null, null);
+    return client.get(sid, cbk);
   };
 
   const delSession = (sid) => {
-    client.del(sid);
+    client.del(sid, noop);
   };
 
   const getAllSessions = (cb) => {
-    client.keys('*', cb);
+    const cbk = cb || noop;
+    client.keys('*', cbk);
   };
 
   const deleteAll = () => {
-    client.flushall();
+    client.flushall(noop);
   };
 
   return {
