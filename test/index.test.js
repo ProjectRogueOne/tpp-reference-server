@@ -22,16 +22,6 @@ const requestHeaders = {
   },
 };
 
-const directoryHeaders = {
-  reqheaders: {
-    authorization: 'Bearer undefined',
-  },
-};
-
-nock(/example\.com/, directoryHeaders)
-  .get('/scim/v2/OBAccountPaymentServiceProviders/')
-  .reply(200, { da: 'ta' });
-
 nock(/example\.com/, requestHeaders)
   .get('/open-banking/v1.1/accounts')
   .reply(200, { hi: 'ya' });
@@ -130,28 +120,6 @@ describe('Session Deletion (Logout)', () => {
 
   after(() => {
     session.deleteAll();
-  });
-});
-
-describe('Directory', () => {
-  session.setSession('foo');
-
-  it('returns proxy 200 response for /account-payment-service-providers', (done) => {
-    login(app).end((err, res) => {
-      const sessionId = res.body.sid;
-
-      request(app)
-        .get('/account-payment-service-providers')
-        .set('Accept', 'application/json')
-        .set('authorization', sessionId)
-        .end((e, r) => {
-          assert.equal(r.status, 200);
-          assert.equal(r.body.da, 'ta');
-          const header = r.headers['access-control-allow-origin'];
-          assert.equal(header, '*');
-          done();
-        });
-    });
   });
 });
 
