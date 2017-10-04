@@ -78,7 +78,7 @@ describe('Session Creation (Login)', () => {
   });
 });
 
-describe('Session Deletion (Logout)', () => {
+describe('Cross Origin Requests Handled Correctly', () => {
   it('returns "Access-Control-Allow-Origin: *" header', (done) => {
     login(app).end(() => {
       request(app)
@@ -90,7 +90,9 @@ describe('Session Deletion (Logout)', () => {
         });
     });
   });
+});
 
+describe('Session Deletion (Logout)', () => {
   it('destroys a valid session at /logout', (done) => {
     login(app).end((err, res) => {
       const sessionId = res.body.sid;
