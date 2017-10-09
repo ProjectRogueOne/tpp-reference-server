@@ -30,6 +30,13 @@ interface and set it to run.
 
 Then set the environment variables `REDIS_PORT` and `REDIS_HOST` as per docker redis instance.
 
+Install [mongodb](https://docs.mongodb.com/manual/). On Mac OSX you can install via
+[homebrew](https://brew.sh):
+
+```sh
+brew install mongodb
+```
+
 ## Testing
 
 Run unit tests with:
