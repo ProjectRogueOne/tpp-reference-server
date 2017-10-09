@@ -1,0 +1,66 @@
+const db = require('monk')('localhost:27017/sample-tpp-server');
+const error = require('debug')('error');
+
+/**
+ * Get document with given `id` field from collection.
+ * @param {string} collection - name of collection.
+ * @param {string} id - `id` field to query.
+ * @return {object} document with given `id` field, or null if none found.
+ */
+const get = async (collection, id) => {
+  try {
+    const store = await db.get(collection);
+    return await store.findOne({ id }, ['-_id']);
+  } catch (e) {
+    error(e);
+    throw e;
+  }
+};
+
+/**
+ * Get document with given `id` field from collection.
+ * @param {string} collection - name of collection.
+ * @param {object} object - document to store.
+ * @param {string} id - supply `id` field to set on document.
+ */
+const set = async (collection, object, id) => {
+  try {
+    const item = Object.assign({ id }, object);
+    const store = await db.get(collection);
+    await store.createIndex('id'); // ensure id index exists
+    if (await get(collection, id)) {
+      return await store.findOneAndUpdate({ id }, item);
+    }
+    return await store.insert(item);
+  } catch (e) {
+    error(e);
+    throw e;
+  }
+};
+
+/**
+ * Drop collection from store.
+ * @param {string} collection - name of collection.
+ */
+const drop = async (collection) => {
+  try {
+    const store = await db.get(collection);
+    return await store.drop();
+  } catch (e) {
+    error(e);
+    throw e;
+  }
+};
+
+const close = async () => {
+  try {
+    await db.close();
+  } catch (e) {
+    error(e);
+  }
+};
+
+exports.get = get;
+exports.set = set;
+exports.drop = drop;
+exports.close = close;
