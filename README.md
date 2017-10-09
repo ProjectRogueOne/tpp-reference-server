@@ -108,6 +108,7 @@ heroku config:set ASPSP_READWRITE_HOST=example.com
 heroku config:set AUTHORIZATION=<mock-token>
 heroku config:set X_FAPI_FINANCIAL_ID=<mock-id>
 heroku config:set DEBUG=error,log
+heroku config:set OB_DIRECTORY_HOST=http://example.com
 
 git push heroku master
 ```
