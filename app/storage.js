@@ -24,6 +24,21 @@ const get = async (collection, id) => {
 };
 
 /**
+ * Get all documents from a collection.
+ * @param {string} collection - name of collection.
+ * @return {array} array of documents in collection, or empty array if none found.
+ */
+const getAll = async (collection) => {
+  try {
+    const store = await db.get(collection);
+    return await store.find({}, ['-_id']);
+  } catch (e) {
+    error(e);
+    throw e;
+  }
+};
+
+/**
  * Get document with given `id` field from collection.
  * @param {string} collection - name of collection.
  * @param {object} object - document to store.
@@ -67,6 +82,7 @@ const close = async () => {
 };
 
 exports.get = get;
+exports.getAll = getAll;
 exports.set = set;
 exports.drop = drop;
 exports.close = close;
