@@ -56,9 +56,8 @@ const storeAuthServers = async (list) => {
   }));
 };
 
-const OBAccountPaymentServiceProviders = async (req, res) => {
+const fetchOBAccountPaymentServiceProviders = async () => {
   try {
-    res.setHeader('Access-Control-Allow-Origin', '*');
     const uri = `${directoryHost}/scim/v2/OBAccountPaymentServiceProviders/`;
     const bearerToken = `Bearer ${accessToken}`;
     log(`getting: ${uri}`);
@@ -77,13 +76,22 @@ const OBAccountPaymentServiceProviders = async (req, res) => {
       log(`data: ${JSON.stringify(authServers)}`);
       const list = await getAll(AUTH_SERVER_COLLECTION);
       const servers = list.map(s => transformServerData(s));
-      return res.json(sortByName(servers));
+      return servers;
     }
-    return res.sendStatus(response.status);
+    return null;
   } catch (e) {
     error(e);
-    throw e;
+    return null;
   }
+};
+
+const OBAccountPaymentServiceProviders = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  const servers = await fetchOBAccountPaymentServiceProviders();
+  if (servers) {
+    return res.json(sortByName(servers));
+  }
+  return res.sendStatus(404);
 };
 
 exports.OBAccountPaymentServiceProviders = OBAccountPaymentServiceProviders;
