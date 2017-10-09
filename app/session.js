@@ -3,47 +3,34 @@ const { store } = require('./persistence.js');
 const log = require('debug')('log');
 
 const session = (() => {
-  const setSession = (sid) => {
-    store.setSession(sid, sid);
-  };
+  const setId = sid => store.set('session_id', sid);
+  const getId = cb => store.get('session_id', cb);
 
-  const destroySession = (sid, cb) => {
-    const sessHandler = (err, reply) => {
-      log(`in sessHandler reply is ${reply}`);
-      if (reply) {
-        store.delSession(reply); // Async but we kinda don't care :-/
-        return cb(reply);
+  const destroy = (candidate, cb) => {
+    const sessHandler = (err, sid) => {
+      log(`in sessHandler sid is ${sid}`);
+      if (sid !== candidate) {
+        return cb(null);
       }
-      return cb(null);
+      store.remove('session_id'); // Async but we kinda don't care :-/
+      return cb(sid);
     };
-    store.getSession(sid, sessHandler);
+    store.get('session_id', sessHandler);
   };
 
-  const getNewSid = () => {
+  const newId = () => {
     const mySid = uuidv1();
-    setSession(mySid);
+    setId(mySid);
     return mySid;
   };
 
-  /* eslint-disable */
-  const getSessions = (cb) => {
-    store.getAllSessions((err, res) => {
-      const sess = {};
-      if (res && res.length) {
-        res.map((sid) => sess[sid] = sid)
-      }
-      cb(err, sess)
-    });
-  };
-  /* eslint-enable */
-
   const check = (req, res) => {
-    getSessions((err, sessions) => {
+    getId((err, sid) => {
       if (err) {
         res.sendStatus(500);
       } else {
         res.setHeader('Content-Type', 'application/json');
-        res.send(JSON.stringify(sessions));
+        res.send(JSON.stringify(sid));
       }
     });
   };
@@ -53,11 +40,11 @@ const session = (() => {
   };
 
   return {
-    setSession,
-    destroySession,
-    getNewSid,
+    setId,
+    getId,
+    destroy,
+    newId,
     check,
-    getSessions,
     deleteAll,
   };
 })();

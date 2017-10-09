@@ -126,8 +126,6 @@ describe('Session Deletion (Logout)', () => {
 });
 
 describe('Proxy', () => {
-  session.setSession('foo');
-
   it('returns proxy 200 response for /open-banking/v1.1/accounts with valid session', (done) => {
     login(app).end((err, res) => {
       const sessionId = res.body.sid;

@@ -74,7 +74,7 @@ const login = application => request(application)
   .send({ u: 'alice', p: 'wonderland' });
 
 describe('Directory', () => {
-  session.setSession('foo');
+  session.setId('foo');
 
   it('returns proxy 200 response for /account-payment-service-provider-authorisation-servers', (done) => {
     login(app).end((err, res) => {
