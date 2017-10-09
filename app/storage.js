@@ -18,7 +18,7 @@ const get = async (collection, id) => {
     const store = await db.get(collection);
     return await store.findOne({ id }, ['-_id']);
   } catch (e) {
-    error(e);
+    error(`error in storage get: ${e.stack}`);
     throw e;
   }
 };
@@ -33,7 +33,7 @@ const getAll = async (collection) => {
     const store = await db.get(collection);
     return await store.find({}, ['-_id']);
   } catch (e) {
-    error(e);
+    error(`error in storage getAll: ${e.stack}`);
     throw e;
   }
 };
@@ -54,7 +54,7 @@ const set = async (collection, object, id) => {
     }
     return await store.insert(item);
   } catch (e) {
-    error(e);
+    error(`error in storage set: ${e.stack}`);
     throw e;
   }
 };

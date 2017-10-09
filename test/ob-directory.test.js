@@ -86,6 +86,7 @@ describe('Directory', () => {
         .set('authorization', sessionId)
         .end((e, r) => {
           assert.equal(r.status, 200);
+          assert.equal(r.body.length, expectedResult.length, `expected ${expectedResult.length} results, got ${r.body.length}`);
           assert.deepEqual(r.body[0], expectedResult[0]);
           assert.deepEqual(r.body[1], expectedResult[1]);
           assert.deepEqual(r.body[2], expectedResult[2]);
