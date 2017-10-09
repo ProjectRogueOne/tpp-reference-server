@@ -37,6 +37,8 @@ Install [mongodb](https://docs.mongodb.com/manual/). On Mac OSX you can install 
 brew install mongodb
 ```
 
+Then set the environment variable `MONGODB_URI` as per your mongodb instance, e.g. `MONGODB_URI=mongodb://localhost:27017/sample-tpp-server`.
+
 ## Testing
 
 Run unit tests with:
@@ -84,6 +86,7 @@ DEBUG=error,log \
   OB_DIRECTORY_ACCESS_TOKEN=example-token \
   AUTHORIZATION=alice \
   X_FAPI_FINANCIAL_ID=abcbank \
+  MONGODB_URI=mongodb://localhost:27017/sample-tpp-server \
   PORT=8003 \
   npm start
 #   log  App listening on port 8003 ...
@@ -110,6 +113,7 @@ heroku login
 heroku create --region eu <newname>
 
 heroku addons:create redistogo # or any other redis add-on
+heroku addons:create mongolab:sandbox
 
 heroku config:set ASPSP_READWRITE_HOST=example.com
 heroku config:set AUTHORIZATION=<mock-token>

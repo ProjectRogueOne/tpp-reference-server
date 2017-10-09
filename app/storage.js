@@ -1,5 +1,11 @@
-const db = require('monk')('localhost:27017/sample-tpp-server');
+const monk = require('monk');
 const error = require('debug')('error');
+
+let mongodbUri = 'localhost:27017/sample-tpp-server';
+if (process.env.MONGODB_URI) {
+  mongodbUri = process.env.MONGODB_URI.replace('mongodb://', '');
+}
+const db = monk(mongodbUri);
 
 /**
  * Get document with given `id` field from collection.
