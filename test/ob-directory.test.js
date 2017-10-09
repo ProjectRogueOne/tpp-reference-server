@@ -8,7 +8,7 @@ const nock = require('nock');
 
 const directoryHeaders = {
   reqheaders: {
-    authorization: 'Bearer undefined',
+    authorization: 'Bearer AN_ACCESS_TOKEN',
   },
 };
 

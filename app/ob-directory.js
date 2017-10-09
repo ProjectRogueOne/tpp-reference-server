@@ -3,7 +3,6 @@ const log = require('debug')('log');
 const error = require('debug')('log');
 
 const directoryHost = process.env.OB_DIRECTORY_HOST;
-const accessToken = process.env.OB_DIRECTORY_ACCESS_TOKEN;
 
 log(`OB_DIRECTORY_HOST: ${directoryHost}`);
 
@@ -34,10 +33,19 @@ const transformResourcesData = (data) => {
     .map(s => transformServerData(s));
 };
 
+const getAccessToken = async () => {
+  let sessionAccessToken;
+  if (sessionAccessToken && sessionAccessToken.expiresAt < new Date()) {
+    return Promise.resolve(sessionAccessToken);
+  }
+  return Promise.resolve('AN_ACCESS_TOKEN');
+};
+
 const OBAccountPaymentServiceProviders = async (req, res) => {
   try {
     res.setHeader('Access-Control-Allow-Origin', '*');
     const uri = `${directoryHost}/scim/v2/OBAccountPaymentServiceProviders/`;
+    const accessToken = await getAccessToken();
     const bearerToken = `Bearer ${accessToken}`;
     log(`getting: ${uri}`);
     const response = await request({
