@@ -80,7 +80,6 @@ const getAccessToken = async () => {
     const tokenType = response.data.token_type;
     const tokenExpiry = parseInt(response.data.expires_in, 10);
     const tokenExpiresAt = new Date().getTime() + (tokenExpiry * 1000);
-
     accessToken = { token, tokenType, tokenExpiresAt };
     session.setAccessToken(accessToken);
 
