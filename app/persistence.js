@@ -39,7 +39,7 @@ const store = (() => {
     return client.get(key, cbk);
   };
 
-  const remove = (key) =>  client.del(key, noop);
+  const remove = key => client.del(key, noop);
 
   const getAll = (cb) => {
     const cbk = cb || noop;
