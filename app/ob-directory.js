@@ -36,9 +36,9 @@ const transformResourcesData = (data) => {
 const getAccessToken = async () => {
   let sessionAccessToken;
   if (sessionAccessToken && sessionAccessToken.expiresAt < new Date()) {
-    return Promise.resolve(sessionAccessToken);
+    return sessionAccessToken;
   }
-  return Promise.resolve('AN_ACCESS_TOKEN');
+  return 'AN_ACCESS_TOKEN';
 };
 
 const OBAccountPaymentServiceProviders = async (req, res) => {
