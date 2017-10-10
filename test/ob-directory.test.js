@@ -1,14 +1,36 @@
 const request = require('supertest');
+const fs = require('fs');
+const path = require('path');
+
+const accessToken = 'AN_ACCESS_TOKEN';
 
 const { app } = require('../app/index.js');
 const { session } = require('../app/session.js');
 const assert = require('assert');
 
 const nock = require('nock');
+const requestHeaders = {
+  reqheaders: {
+    'accept': 'application/json, text/plain, */*',
+    'user-agent': 'axios/0.16.2',
+  },
+};
+
+nock(/secure-url\.com/)
+  .get('/private_key.pem')
+  .reply( 200, fs.readFileSync(path.join(__dirname, 'test_private_key.pem')));
+
+nock(/auth\.com/)
+  .post('/as/token.oauth2')
+  .reply(200, {
+    access_token: accessToken,
+    token_type: 'Bearer',
+    expires_in: 1000,
+  });
 
 const directoryHeaders = {
   reqheaders: {
-    authorization: 'Bearer AN_ACCESS_TOKEN',
+    authorization: `Bearer ${accessToken}`,
   },
 };
 
