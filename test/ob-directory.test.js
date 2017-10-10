@@ -8,19 +8,13 @@ const { drop } = require('../app/storage.js');
 const { app } = require('../app/index.js');
 const { session } = require('../app/session.js');
 const { AUTH_SERVER_COLLECTION } = require('../app/ob-directory');
-const assert = require('assert');
 
+const assert = require('assert');
 const nock = require('nock');
-const requestHeaders = {
-  reqheaders: {
-    'accept': 'application/json, text/plain, */*',
-    'user-agent': 'axios/0.16.2',
-  },
-};
 
 nock(/secure-url\.com/)
   .get('/private_key.pem')
-  .reply( 200, fs.readFileSync(path.join(__dirname, 'test_private_key.pem')));
+  .reply(200, fs.readFileSync(path.join(__dirname, 'test_private_key.pem')));
 
 nock(/auth\.com/)
   .post('/as/token.oauth2')
