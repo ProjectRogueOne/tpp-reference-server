@@ -4,8 +4,10 @@ const path = require('path');
 
 const accessToken = 'AN_ACCESS_TOKEN';
 
+const { drop } = require('../app/storage.js');
 const { app } = require('../app/index.js');
 const { session } = require('../app/session.js');
+const { AUTH_SERVER_COLLECTION } = require('../app/ob-directory');
 const assert = require('assert');
 
 const nock = require('nock');
@@ -108,6 +110,7 @@ describe('Directory', () => {
         .set('authorization', sessionId)
         .end((e, r) => {
           assert.equal(r.status, 200);
+          assert.equal(r.body.length, expectedResult.length, `expected ${expectedResult.length} results, got ${r.body.length}`);
           assert.deepEqual(r.body[0], expectedResult[0]);
           assert.deepEqual(r.body[1], expectedResult[1]);
           assert.deepEqual(r.body[2], expectedResult[2]);
@@ -119,6 +122,7 @@ describe('Directory', () => {
   });
 
   after(() => {
+    drop(AUTH_SERVER_COLLECTION);
     session.deleteAll();
   });
 });

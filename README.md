@@ -30,6 +30,15 @@ interface and set it to run.
 
 Then set the environment variables `REDIS_PORT` and `REDIS_HOST` as per docker redis instance.
 
+Install [mongodb](https://docs.mongodb.com/manual/). On Mac OSX you can install via
+[homebrew](https://brew.sh):
+
+```sh
+brew install mongodb
+```
+
+Then set the environment variable `MONGODB_URI` as per your mongodb instance, e.g. `MONGODB_URI=mongodb://localhost:27017/sample-tpp-server`.
+
 ## Testing
 
 Run unit tests with:
@@ -77,6 +86,7 @@ DEBUG=error,log \
   OB_DIRECTORY_ACCESS_TOKEN=example-token \
   AUTHORIZATION=alice \
   X_FAPI_FINANCIAL_ID=abcbank \
+  MONGODB_URI=mongodb://localhost:27017/sample-tpp-server \
   PORT=8003 \
   npm start
 #   log  App listening on port 8003 ...
@@ -103,11 +113,13 @@ heroku login
 heroku create --region eu <newname>
 
 heroku addons:create redistogo # or any other redis add-on
+heroku addons:create mongolab:sandbox
 
 heroku config:set ASPSP_READWRITE_HOST=example.com
 heroku config:set AUTHORIZATION=<mock-token>
 heroku config:set X_FAPI_FINANCIAL_ID=<mock-id>
 heroku config:set DEBUG=error,log
+heroku config:set OB_DIRECTORY_HOST=http://example.com
 
 git push heroku master
 ```

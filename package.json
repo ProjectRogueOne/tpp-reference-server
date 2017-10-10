@@ -15,6 +15,7 @@
     "express-http-proxy": "^1.0.7",
     "njwt": "0.4.0",
     "qs": "6.5.1",
+    "monk": "^6.0.5",
     "redis": "^2.8.0",
     "uuid": "^3.1.0"
   },
@@ -31,9 +32,9 @@
   "scripts": {
     "foreman": "./node_modules/foreman/nf.js start",
     "start": "node index.js",
-    "test": "mocha",
-    "test:watch": "mocha --watch",
-    "test:debug": "node --inspect node_modules/mocha/bin/_mocha --watch --no-timeouts",
+    "test": "MONGODB_URI='localhost:27017/test-tpp-server' mocha",
+    "test:watch": "MONGODB_URI='localhost:27017/test-tpp-server' mocha --watch",
+    "test:debug": "MONGODB_URI='localhost:27017/test-tpp-server' node --inspect node_modules/mocha/bin/_mocha --watch --no-timeouts",
     "eslint": "node ./node_modules/eslint/bin/eslint.js .",
     "checks": "node ./node_modules/eslint/bin/eslint.js . && mocha"
   },

@@ -4,7 +4,10 @@ const qs = require('qs');
 const { session } = require('./session');
 const util = require('util');
 const log = require('debug')('log');
-const error = require('debug')('log');
+const error = require('debug')('error');
+const { getAll, set } = require('./storage');
+
+const AUTH_SERVER_COLLECTION = 'aspspAuthorisationServers';
 
 const directoryHost = process.env.OB_DIRECTORY_HOST;
 const directoryAuthHost = process.env.OB_DIRECTORY_AUTH_HOST;
@@ -16,6 +19,18 @@ const signingKeyUrl = process.env.DEMO_ONLY_PRIVATE_KEY_URL;
 log(`OB_DIRECTORY_HOST: ${directoryHost}`);
 
 const getSessionAccessToken = util.promisify(session.getAccessToken);
+
+const sortByName = (list) => {
+  list.sort((a, b) => {
+    if (a.name > b.name) {
+      return 1;
+    } else if (a.name > b.name) {
+      return -1;
+    }
+    return 0;
+  });
+  return list;
+};
 
 const transformServerData = (data) => {
   const id = data.BaseApiDNSUri;
@@ -30,18 +45,39 @@ const transformServerData = (data) => {
   };
 };
 
-const transformResourcesData = (data) => {
+const extractAuthorisationServers = (data) => {
   if (!data.Resources) {
     return [];
   }
-  return data.Resources
+  const authServers = data.Resources
     .filter(resource => !!resource.AuthorisationServers)
     .map(resource => resource.AuthorisationServers.map((r) => {
       r.orgId = resource.id; // eslint-disable-line
       return r;
     }))
-    .reduce((a, b) => a.concat(b), []) // flatten array
-    .map(s => transformServerData(s));
+    .reduce((a, b) => a.concat(b), []); // flatten array
+  return authServers;
+};
+
+const storeAuthorisationServers = async (list) => {
+  await Promise.all(list.map(async (item) => {
+    const id = `${item.orgId}-${item.BaseApiDNSUri}`;
+    await set(AUTH_SERVER_COLLECTION, item, id);
+  }));
+};
+
+const storedAuthorisationServers = async () => {
+  try {
+    const list = await getAll(AUTH_SERVER_COLLECTION);
+    if (!list) {
+      return [];
+    }
+    const servers = list.map(s => transformServerData(s));
+    return sortByName(servers);
+  } catch (e) {
+    error(e);
+    return [];
+  }
 };
 
 const getAccessToken = async () => {
@@ -90,9 +126,8 @@ const getAccessToken = async () => {
   }
 };
 
-const OBAccountPaymentServiceProviders = async (req, res) => {
+const fetchOBAccountPaymentServiceProviders = async () => {
   try {
-    res.setHeader('Access-Control-Allow-Origin', '*');
     const uri = `${directoryHost}/scim/v2/OBAccountPaymentServiceProviders/`;
     const accessToken = await getAccessToken();
     const bearerToken = `Bearer ${accessToken.token}`;
@@ -107,16 +142,28 @@ const OBAccountPaymentServiceProviders = async (req, res) => {
     });
     log(`response: ${response.status}`);
     if (response.status === 200) {
-      const transformed = transformResourcesData(response.data);
-      log(`data: ${JSON.stringify(transformed)}`);
-      return res.json(transformed);
+      const authServers = extractAuthorisationServers(response.data);
+      log(`data: ${JSON.stringify(authServers)}`);
+      await storeAuthorisationServers(authServers);
+      return storedAuthorisationServers();
     }
-    return res.sendStatus(response.status);
+    return [];
   } catch (e) {
     error(e);
-    throw e;
+    return [];
   }
 };
 
+const OBAccountPaymentServiceProviders = async (req, res) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  let servers = storedAuthorisationServers();
+  if (servers.length > 0) {
+    fetchOBAccountPaymentServiceProviders(); // async update store
+  } else {
+    servers = await fetchOBAccountPaymentServiceProviders();
+  }
+  return res.json(servers);
+};
+
 exports.OBAccountPaymentServiceProviders = OBAccountPaymentServiceProviders;
-exports.getAccessToken = getAccessToken;
+exports.AUTH_SERVER_COLLECTION = AUTH_SERVER_COLLECTION;
