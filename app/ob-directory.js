@@ -1,10 +1,15 @@
 const request = require('axios');
+const { session } = require('./session');
 const log = require('debug')('log');
 const error = require('debug')('log');
 
 const directoryHost = process.env.OB_DIRECTORY_HOST;
 
 log(`OB_DIRECTORY_HOST: ${directoryHost}`);
+
+const getSessionAccessToken = async () => new Promise((resolve, reject) => {
+  session.getAccessToken((err, reply) => (err ? reject(err) : resolve(reply)));
+});
 
 const transformServerData = (data) => {
   const id = data.BaseApiDNSUri;
@@ -34,11 +39,12 @@ const transformResourcesData = (data) => {
 };
 
 const getAccessToken = async () => {
-  let sessionAccessToken;
+  let sessionAccessToken = await getSessionAccessToken();
   if (sessionAccessToken && sessionAccessToken.expiresAt < new Date()) {
     return sessionAccessToken;
   }
-  return 'AN_ACCESS_TOKEN';
+  sessionAccessToken = 'AN_ACCESS_TOKEN';
+  return sessionAccessToken;
 };
 
 const OBAccountPaymentServiceProviders = async (req, res) => {
