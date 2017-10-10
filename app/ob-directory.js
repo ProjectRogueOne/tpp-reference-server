@@ -1,5 +1,6 @@
 const request = require('axios');
 const { session } = require('./session');
+const util = require('util');
 const log = require('debug')('log');
 const error = require('debug')('log');
 
@@ -7,9 +8,7 @@ const directoryHost = process.env.OB_DIRECTORY_HOST;
 
 log(`OB_DIRECTORY_HOST: ${directoryHost}`);
 
-const getSessionAccessToken = async () => new Promise((resolve, reject) => {
-  session.getAccessToken((err, reply) => (err ? reject(err) : resolve(reply)));
-});
+const getSessionAccessToken = util.promisify(session.getAccessToken);
 
 const transformServerData = (data) => {
   const id = data.BaseApiDNSUri;
