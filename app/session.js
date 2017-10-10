@@ -5,6 +5,7 @@ const log = require('debug')('log');
 const session = (() => {
   const setId = sid => store.set('session_id', sid);
   const getId = cb => store.get('session_id', cb);
+  const setAccessToken = accessToken => store.set('ob_directory_access_token', JSON.stringify(accessToken));
   const getAccessToken = cb => store.get('ob_directory_access_token', cb);
 
   const destroy = (candidate, cb) => {
@@ -43,6 +44,7 @@ const session = (() => {
   return {
     setId,
     getId,
+    setAccessToken,
     getAccessToken,
     destroy,
     newId,
