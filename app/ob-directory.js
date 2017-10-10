@@ -1,6 +1,6 @@
 const request = require('axios');
 const log = require('debug')('log');
-const error = require('debug')('log');
+const error = require('debug')('error');
 const { getAll, set } = require('./storage');
 
 const AUTH_SERVER_COLLECTION = 'aspspAuthorisationServers';
