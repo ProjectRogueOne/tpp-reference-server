@@ -35,7 +35,7 @@ const transformServerData = (data) => {
   };
 };
 
-const extractAuthServers = (data) => {
+const extractAuthorisationServers = (data) => {
   if (!data.Resources) {
     return [];
   }
@@ -49,11 +49,25 @@ const extractAuthServers = (data) => {
   return authServers;
 };
 
-const storeAuthServers = async (list) => {
+const storeAuthorisationServers = async (list) => {
   await Promise.all(list.map(async (item) => {
     const id = `${item.orgId}-${item.BaseApiDNSUri}`;
     await set(AUTH_SERVER_COLLECTION, item, id);
   }));
+};
+
+const storedAuthorisationServers = async () => {
+  try {
+    const list = await getAll(AUTH_SERVER_COLLECTION);
+    if (!list) {
+      return [];
+    }
+    const servers = list.map(s => transformServerData(s));
+    return sortByName(servers);
+  } catch (e) {
+    error(e);
+    return [];
+  }
 };
 
 const fetchOBAccountPaymentServiceProviders = async () => {
@@ -71,27 +85,28 @@ const fetchOBAccountPaymentServiceProviders = async () => {
     });
     log(`response: ${response.status}`);
     if (response.status === 200) {
-      const authServers = extractAuthServers(response.data);
-      await storeAuthServers(authServers);
+      const authServers = extractAuthorisationServers(response.data);
       log(`data: ${JSON.stringify(authServers)}`);
-      const list = await getAll(AUTH_SERVER_COLLECTION);
-      const servers = list.map(s => transformServerData(s));
-      return servers;
+      await storeAuthorisationServers(authServers);
+      return storedAuthorisationServers();
     }
-    return null;
+    return [];
   } catch (e) {
     error(e);
-    return null;
+    return [];
   }
 };
 
 const OBAccountPaymentServiceProviders = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  const servers = await fetchOBAccountPaymentServiceProviders();
-  if (servers) {
-    return res.json(sortByName(servers));
+  let servers = storedAuthorisationServers();
+  if (servers.length > 0) {
+    fetchOBAccountPaymentServiceProviders(); // async update store
+  } else {
+    servers = await fetchOBAccountPaymentServiceProviders();
   }
-  return res.sendStatus(404);
+  return res.json(servers);
 };
 
 exports.OBAccountPaymentServiceProviders = OBAccountPaymentServiceProviders;
+exports.AUTH_SERVER_COLLECTION = AUTH_SERVER_COLLECTION;

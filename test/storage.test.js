@@ -5,7 +5,7 @@ const assert = require('assert');
 // const error = require('debug')('error');
 
 describe('storage set data with id', () => {
-  const collection = 'test-auth-servers';
+  const collection = 'testAuthServers';
   const orgId = 'bbbccc-example-org';
   const data = {
     BaseApiDNSUri: 'http://bbb.example.com',

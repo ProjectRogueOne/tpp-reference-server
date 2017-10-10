@@ -1,7 +1,9 @@
 const request = require('supertest');
 
+const { drop } = require('../app/storage.js');
 const { app } = require('../app/index.js');
 const { session } = require('../app/session.js');
+const { AUTH_SERVER_COLLECTION } = require('../app/ob-directory');
 const assert = require('assert');
 
 const nock = require('nock');
@@ -98,6 +100,7 @@ describe('Directory', () => {
   });
 
   after(() => {
+    drop(AUTH_SERVER_COLLECTION);
     session.deleteAll();
   });
 });
