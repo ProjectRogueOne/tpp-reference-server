@@ -5,9 +5,14 @@ const xFapiFinancialId = 'xyz';
 
 process.env.DEBUG = 'error';
 process.env.ASPSP_READWRITE_HOST = 'example.com';
-process.env.OB_DIRECTORY_HOST = 'http://example.com';
 process.env.AUTHORIZATION = authorization;
 process.env.X_FAPI_FINANCIAL_ID = xFapiFinancialId;
+process.env.OB_DIRECTORY_HOST = 'http://example.com';
+process.env.OB_DIRECTORY_AUTH_HOST = 'http://auth.com';
+process.env.SOFTWARE_STATEMENT_ID = 'xxxxxxxx-xx2b-4xx3-a19a-xx9ec3baxxxx';
+process.env.SOFTWARE_STATEMENT_ASSERTION_KID = 'xxXXTm-XXxKBDuXxKoWXXX_xxxx';
+process.env.CLIENT_SCOPES='openid TPPReadAccess ASPSPReadAccess';
+process.env.DEMO_ONLY_PRIVATE_KEY_URL= 'http://secure-url.com/private_key.pem';
 
 const { app } = require('../app/index.js');
 const { session } = require('../app/session.js');
