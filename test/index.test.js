@@ -201,5 +201,10 @@ describe('Proxy', () => {
 
   after(() => {
     session.deleteAll();
+    delete process.env.DEBUG;
+    delete process.env.ASPSP_READWRITE_HOST;
+    delete process.env.OB_DIRECTORY_HOST;
+    delete process.env.AUTHORIZATION;
+    delete process.env.X_FAPI_FINANCIAL_ID;
   });
 });
