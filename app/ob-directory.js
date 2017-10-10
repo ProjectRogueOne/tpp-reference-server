@@ -9,7 +9,7 @@ const error = require('debug')('log');
 const directoryHost = process.env.OB_DIRECTORY_HOST;
 const directoryAuthHost = process.env.OB_DIRECTORY_AUTH_HOST;
 const softwareStatementId = process.env.SOFTWARE_STATEMENT_ID;
-const softwareStatementAssertionKid = process.env.KID;
+const softwareStatementAssertionKid = process.env.SOFTWARE_STATEMENT_ASSERTION_KID;
 const authClientScopes = process.env.CLIENT_SCOPES;
 const signingKeyUrl = process.env.DEMO_ONLY_PRIVATE_KEY_URL;
 
