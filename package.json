@@ -41,7 +41,6 @@
     "type": "git",
     "url": "git+https://github.com/OpenBankingUK/sample-tpp-server.git"
   },
-  "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/OpenBankingUK/sample-tpp-server/issues"
