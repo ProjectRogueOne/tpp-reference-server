@@ -103,11 +103,21 @@ as per your redis instance.
 
 ## Deploy to heroku
 
-To deploy to heroku for the first time from a Mac:
+To deploy to heroku for the first time:
 
 ```sh
-brew install heroku
+npm install -g heroku-cli
+```
 
+To verify your CLI installation use the heroku --version command.
+
+```sh
+heroku --version
+```
+
+Setup application.
+
+```sh
 heroku login
 
 heroku create --region eu <newname>
