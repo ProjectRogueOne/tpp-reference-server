@@ -2,6 +2,12 @@
 
 This application simulates a typical TPP backend server. Its primary function is to provide Open Banking processes to a client.
 
+The implementation uses
+[Node.js](https://nodejs.org/),
+[express](https://github.com/expressjs/express),
+and
+[express-http-proxy](https://github.com/villadora/express-http-proxy).
+
 ## Use cases
 
 __Work in progress__ - so far we provide use cases for:
@@ -66,11 +72,6 @@ Here's a sample list of test ASPSPs as requested from the Open Banking Directory
 ]
 ```
 
-Sample TPP server implemented using
-[Node.js](https://nodejs.org/),
-[express](https://github.com/expressjs/express),
-and
-[express-http-proxy](https://github.com/villadora/express-http-proxy).
 
 ## Installation
 
