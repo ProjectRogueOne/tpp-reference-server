@@ -1,5 +1,61 @@
 # Sample TPP Server
 
+This application simulates a typical TPP backend server. Its primary function is to provide Open Banking processes to a client.
+
+## Use cases
+
+This is WIP. So far, we provide use case for:
+
+* Authenticating with the server.
+* Providing a list of ASPSP Authorisation and Resource Servers - actual & simulated based on ENVs.
+* Transform client requests into backend ASPSP API requests.
+
+## How it works
+
+### Logging in
+
+```sh
+curl -X POST --data 'u=alice&p=wonderland' http://localhost:8003/login
+```
+
+This results in a `sid`. A session ID token to be used for further authorized access.
+
+This is an example.
+
+```sh
+{
+  "sid": "896beb20-affc-11e7-a5e6-a941c8c37252"
+}
+```
+
+### List ASPSP Authorisation and Resource Servers
+
+Please use the `sid` obtained when logging above for authorization purposes.
+
+```sh
+curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' http://localhost:8003/account-payment-service-provider-authorisation-servers
+```
+
+Here's a sample list of test ASPSPs as requested from the Open Banking Directory.
+
+```sh
+[
+  {
+    "id": "https://banka.api-bank.co.uk",
+    "logoUri": "",
+    "name": "Dev-Auth-Server",
+    "orgId": "XXXXXXXXXXXXXXXXXX"
+  },
+  {
+    "id": "http://MyAuth.co.uk",
+    "logoUri": "http://MyAuth.co.uk",
+    "name": "MyAuthServer",
+    "orgId": "XXXXXXXXXXXXXXXXXX"
+  },
+  ....
+]
+```
+
 Sample TPP server implemented using
 [Node.js](https://nodejs.org/),
 [express](https://github.com/expressjs/express),
