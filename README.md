@@ -4,21 +4,21 @@ This application simulates a typical TPP backend server. Its primary function is
 
 ## Use cases
 
-This is WIP. So far, we provide use case for:
+__Work in progress__ - so far we provide use cases for:
 
 * Authenticating with the server.
-* Providing a list of ASPSP Authorisation and Resource Servers - actual & simulated based on ENVs.
+* List ASPSP Authorization and Resource Servers - actual & simulated based on ENVs.
 * Transform client requests into backend ASPSP API requests.
 
-## How it works
+### Authenticating with the server.
 
-### Logging in
+#### Login
 
 ```sh
 curl -X POST --data 'u=alice&p=wonderland' http://localhost:8003/login
 ```
 
-This results in a `sid`. A session ID token to be used for further authorized access.
+This returns a session ID token as a `sid`. Use this for further authorized access.
 
 This is an example.
 
@@ -28,9 +28,19 @@ This is an example.
 }
 ```
 
+#### Logout
+
+Please __change__ the `Authorization` header to use the `sid` obtained after login.
+
+This destroys the session established by the `sid` token obtained after login.
+
+```sh
+curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' http://localhost:8003/logout
+```
+
 ### List ASPSP Authorisation and Resource Servers
 
-Please use the `sid` obtained when logging above for authorization purposes.
+Please __change__ the `Authorization` header to use the `sid` obtained after logging in.
 
 ```sh
 curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' http://localhost:8003/account-payment-service-provider-authorisation-servers
