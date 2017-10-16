@@ -46,6 +46,32 @@ curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' http://loca
 
 ### List ASPSP Authorisation and Resource Servers
 
+#### OB Directory provisioned TPP
+
+The server has to be configured with
+* `OB_PROVISIONED=true`.
+* `OB_DIRECTORY_HOST=https://<real directory>`.
+* `SOFTWARE_STATEMENT_ID=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`.
+* `SOFTWARE_STATEMENT_ASSERTION_KID=XXXXXX-XXXXxxxXxXXXxxx_xxxx`.
+* `CLIENT_SCOPES='openid TPPReadAccess ASPSPReadAccess'`.
+* `DEMO_ONLY_PRIVATE_KEY_URL=https://some.secure-url.com/private_key.pem`.
+
+This forces the server to use a provisioned `SOFTWARE_STATEMENT_ID` with the correct oAuth payloads that request real data from the OB Directory.
+
+Details in [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample).
+
+#### OB Directory NOT provisioned TPP
+
+The server has to be configured with
+* `OB_PROVISIONED=false`.
+* `OB_DIRECTORY_HOST=http://localhost:8001` - the [Read/Write API Mock Server](#the-readwrite-api-mock-server) host details.
+
+Here we work around encrypted OB Directory communication. The Read/Write API Mock Server returns the required data.
+
+Details in [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample).
+
+#### Curl command
+
 Please __change__ the `Authorization` header to use the `sid` obtained after logging in.
 
 ```sh
@@ -74,7 +100,7 @@ Here's a sample list of test ASPSPs as requested from the Open Banking Directory
 
 ### Proxy requests for upstream backend ASPSP APIs
 
-__NOTE:__ For this to work you need an ASPSP server installed and running. Details in The [Read/Write API Mock Server](https://github.com/OpenBankingUK/sample-tpp-server/tree/es_cdrw-664_select_bank_dynamic#the-readwrite-api-mock-server ) section.
+__NOTE:__ For this to work you need an ASPSP server installed and running. Details in The [Read/Write API Mock Server](#the-readwrite-api-mock-server) section.
 
 #### Proxied API path
 
@@ -84,7 +110,7 @@ For example `/open-banking/v1.1` gives access to the 1.1 Read write Apis.
 
 #### GET Accounts for a user (Account and Transaction API)
 
-We have a hardcoded demo user `alice` with bank `abcbank` setup in [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server). To access demo accounts for this user please setup the following `ENVS` (already configured in [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample)).
+We have a hardcoded demo user `alice` with bank `abcbank` setup in [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server). To access demo accounts for this user please setup the following `ENVS` (already configured in [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample).
 
 * `AUTHORIZATION=alice`.
 * `X_FAPI_FINANCIAL_ID=abcbank`.
