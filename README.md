@@ -207,36 +207,53 @@ A sample request looks like this:
 
 ## Installation
 
-Install npm packages:
+### Dependencies
 
-```sh
-npm install
-```
+#### NodeJS
 
-Install [redis](https://redis.io). On Mac OSX you can install via [homebrew](https://brew.sh):
+We assume [NodeJS](https://nodejs.org/en/) ver8.4+ is installed.
+
+On Mac OSX, use instructions here [Installing Node.js Tutorial](https://nodesource.com/blog/installing-nodejs-tutorial-mac-os-x/).
+
+On Linux, use instructions in [How To Install Node.js On Linux](https://www.ostechnix.com/install-node-js-linux/).
+
+On Windows, use instructions provided here [Installing Node.js Tutorial: Windows](https://nodesource.com/blog/installing-nodejs-tutorial-windows/).
+
+#### Redis
+
+On Mac OSX, you can install via [homebrew](https://brew.sh). Then.
 
 ```sh
 brew install redis
 ```
 
-If not installing via homebrew, you can get Redis
-running on your host machine by using a docker instance
-of it.  This works cross platform (e.g. Windows / Mac).
-You'll need to have Docker installed and running; for the latest version go to https://www.docker.com/products/docker-toolbox
+On Linux, use instructions in the [Redis Quick Start guide](https://redis.io/topics/quickstart).
 
-Once Docker is installed you can install the Docker Redis Instance through the [Kitematic](https://kitematic.com)
-interface and set it to run.
+On Windows, use instructions provided here [Installing Redis on a Windows Workstation](https://essenceofcode.com/2015/03/18/installing-redis-on-a-windows-workstation/).
 
-Then set the environment variables `REDIS_PORT` and `REDIS_HOST` as per docker redis instance.
+Then set the environment variables `REDIS_PORT` and `REDIS_HOST` as per redis instance. Example in [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample)
 
-Install [mongodb](https://docs.mongodb.com/manual/). On Mac OSX you can install via
-[homebrew](https://brew.sh):
+#### MongoDB
+
+On Mac OSX, you can install via [homebrew](https://brew.sh). Then
 
 ```sh
 brew install mongodb
 ```
 
-Then set the environment variable `MONGODB_URI` as per your mongodb instance, e.g. `MONGODB_URI=mongodb://localhost:27017/sample-tpp-server`.
+On Linux, use instructions in the [Install MongoDB Community Edition on Linux](https://docs.mongodb.com/manual/administration/install-on-linux/).
+
+On Windows, use instructions provided here [Install MongoDB Community Edition on Windows](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-windows/).
+
+Then set the environment variable `MONGODB_URI` as per your mongodb instance, e.g. `MONGODB_URI=mongodb://localhost:27017/sample-tpp-server`. Example in [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample)
+
+### Server setup
+
+Install npm packages:
+
+```sh
+npm install
+```
 
 ## Testing
 
