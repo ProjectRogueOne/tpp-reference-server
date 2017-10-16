@@ -1,7 +1,8 @@
 {
   "name": "sample-tpp-server",
-  "version": "0.1.1",
-  "description": "TPP Middleware Proxy",
+  "version": "0.1.0",
+  "description": "Reference TPP application API server",
+  "author": "Open Banking Limited",
   "main": "index.js",
   "engines": {
     "node": "8.4.0"
@@ -42,7 +43,6 @@
     "type": "git",
     "url": "git+https://github.com/OpenBankingUK/sample-tpp-server.git"
   },
-  "author": "",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/OpenBankingUK/sample-tpp-server/issues"
