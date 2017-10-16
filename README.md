@@ -14,7 +14,7 @@ __Work in progress__ - so far we provide use cases for:
 
 * Authenticating with the server.
 * List ASPSP Authorization and Resource Servers - actual & simulated based on ENVs.
-* Transform client requests into backend ASPSP API requests.
+* Proxy requests for upstream backend [ASPSP Read/Write APIs](https://www.openbanking.org.uk/read-write-apis/).
 
 ### Authenticating with the server.
 
@@ -72,6 +72,136 @@ Here's a sample list of test ASPSPs as requested from the Open Banking Directory
 ]
 ```
 
+### Proxy requests for upstream backend ASPSP APIs
+
+#### Read/Write API mock server
+
+For this to work you need an ASPSP server. We have a [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) that provides simulated endpoints to showcase what the Read/Write API can provide. Please install and run the server as per instructions on the [Github page](https://github.com/OpenBankingUK/readwrite-api-mock-server).
+
+Then ensure you point to it by configuring the `ASPSP_READWRITE_HOST` endpoint either directly or using in the `.env` file. Find details in the [To run locally](https://github.com/OpenBankingUK/sample-tpp-server#to-run-locally) section.
+
+__NOTE__: The [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) API mock server uses a [Swagger](http://swagger.io) file that documents the spec. This is stored in the mock server's `SWAGGER`. To obtain this you have to setup another repo [account-info-api-spec](https://github.com/OpenBankingUK/account-info-api-spec). That repo's [README](https://github.com/OpenBankingUK/account-info-api-spec/blob/master/README.md) contains setup necessary details.
+
+#### Proxied API path
+
+To interact with proxied Open Banking Read/Write APIs please use the path `/open-banking/[api_version]` in all requests.
+
+For example `/open-banking/v1.1` gives access to the 1.1 Read write Apis.
+
+#### GET Accounts for a user (Account and Transaction API)
+
+We have a hardcoded demo user `alice` with bank `abcbank` setup in [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server). To access demo accounts for this user please setup the following `ENVS` (already configured in [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample)).
+
+* `AUTHORIZATION=alice`.
+* `X_FAPI_FINANCIAL_ID=abcbank`.
+
+```sh
+curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' -H 'Accept: application/json'  http://localhost:8003/open-banking/v1.1/accounts
+```
+
+A sample response looks like this:
+
+```sh
+{
+  "Data": [
+    {
+      "AccountId": "22289",
+      "Currency": "GBP",
+      "Nickname": "bills",
+      "Account": {
+        "SchemeName": "BBAN",
+        "Identification": "10203345",
+        "Name": "Ms Liddell",
+        "SecondaryIdentification": "341267"
+      },
+      "Servicer": {
+        "SchemeName": "UKSortCode",
+        "Identification": "SC802001"
+      }
+    }
+  ],
+  "Links": {
+    "Self": "/accounts"
+  },
+  "Meta": {
+    "TotalPages": 1
+  }
+}
+```
+
+#### GET Product associated with an account (Account and Transaction API)
+
+Using the same demo account as above.
+
+```sh
+curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' -H 'Accept: application/json'  http://localhost:8003/open-banking/v1.1/accounts/22289/product
+```
+
+A sample response looks like this:
+
+```sh
+{
+  "Data": {
+    "Product": [
+      {
+        "AccountId": "22289",
+        "ProductIdentifier": "CC",
+        "ProductType": "PCA",
+        "ProductName": "321"
+      }
+    ]
+  },
+  "Links": {
+    "Self": "/accounts/22289/product"
+  },
+  "Meta": {
+    "TotalPages": 1
+  }
+}
+```
+
+#### GET Balances associated with an account (Account and Transaction API)
+
+Using the same demo account as above.
+
+```sh
+curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' -H 'Accept: application/json'  http://localhost:8003/open-banking/v1.1/accounts/22289/balances
+```
+
+A sample request looks like this:
+
+```sh
+{
+  "Data": {
+    "Balance": [
+      {
+        "AccountId": "22289",
+        "Amount": {
+          "Amount": "1230.00",
+          "Currency": "GBP"
+        },
+        "CreditDebitIndicator": "Credit",
+        "Type": "InterimAvailable",
+        "DateTime": "2017-04-05T10:43:07+00:00",
+        "CreditLine": {
+          "Included": true,
+          "Amount": {
+            "Amount": "1000.00",
+            "Currency": "GBP"
+          },
+          "Type": "Pre-Agreed"
+        }
+      }
+    ]
+  },
+  "Links": {
+    "Self": "/accounts/22289/balances"
+  },
+  "Meta": {
+    "TotalPages": 1
+  }
+}
+```
 
 ## Installation
 
