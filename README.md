@@ -10,7 +10,7 @@ and
 
 ## Use cases
 
-__Work in progress__ - so far we provide use cases for:
+__Work in progress__ - so far we provide,
 
 * Authenticating with the server.
 * List ASPSP Authorization and Resource Servers - actual & simulated based on ENVs.
@@ -74,13 +74,15 @@ Here's a sample list of test ASPSPs as requested from the Open Banking Directory
 
 ### Proxy requests for upstream backend ASPSP APIs
 
-#### Read/Write API mock server
+__NOTE:__ For this to work you need an ASPSP server!
 
-For this to work you need an ASPSP server. We have a [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) that provides simulated endpoints to showcase what the Read/Write API can provide. Please install and run the server as per instructions on the [Github page](https://github.com/OpenBankingUK/readwrite-api-mock-server).
+#### The Read/Write API mock server
 
-Then ensure you point to it by configuring the `ASPSP_READWRITE_HOST` endpoint either directly or using in the `.env` file. Find details in the [To run locally](https://github.com/OpenBankingUK/sample-tpp-server#to-run-locally) section.
+We have a [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) that provides simulated endpoints to showcase what the Read/Write API can provide. Please install and run the server as per instructions on the [Github page](https://github.com/OpenBankingUK/readwrite-api-mock-server).
 
-__NOTE__: The [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) API mock server uses a [Swagger](http://swagger.io) file that documents the spec. This is stored in the mock server's `SWAGGER`. To obtain this you have to setup another repo [account-info-api-spec](https://github.com/OpenBankingUK/account-info-api-spec). That repo's [README](https://github.com/OpenBankingUK/account-info-api-spec/blob/master/README.md) contains setup necessary details.
+Then ensure you point to the above server by configuring the `ASPSP_READWRITE_HOST` endpoint either directly or using in the [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample) file. Find details in the [To run locally](https://github.com/OpenBankingUK/sample-tpp-server#to-run-locally) section.
+
+__NOTE__: The [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) uses a [Swagger](http://swagger.io) file that documents the spec. This is stored in the mock server's `SWAGGER` ENV. To obtain this you have to setup another repo [account-info-api-spec](https://github.com/OpenBankingUK/account-info-api-spec). That repo's [README](https://github.com/OpenBankingUK/account-info-api-spec/blob/master/README.md) contains setup necessary details.
 
 #### Proxied API path
 
