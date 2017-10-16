@@ -74,15 +74,7 @@ Here's a sample list of test ASPSPs as requested from the Open Banking Directory
 
 ### Proxy requests for upstream backend ASPSP APIs
 
-__NOTE:__ For this to work you need an ASPSP server!
-
-#### The Read/Write API mock server
-
-We have a [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) that provides simulated endpoints to showcase what the Read/Write API can provide. Please install and run the server as per instructions on the [Github page](https://github.com/OpenBankingUK/readwrite-api-mock-server).
-
-Then ensure you point to the above server by configuring the `ASPSP_READWRITE_HOST` endpoint either directly or using in the [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample) file. Find details in the [To run locally](https://github.com/OpenBankingUK/sample-tpp-server#to-run-locally) section.
-
-__NOTE__: The [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) uses a [Swagger](http://swagger.io) file that documents the spec. This is stored in the mock server's `SWAGGER` ENV. To obtain this you have to setup another repo [account-info-api-spec](https://github.com/OpenBankingUK/account-info-api-spec). That repo's [README](https://github.com/OpenBankingUK/account-info-api-spec/blob/master/README.md) contains setup necessary details.
+__NOTE:__ For this to work you need an ASPSP server installed and running. Details in The [Read/Write API Mock Server](https://github.com/OpenBankingUK/sample-tpp-server/tree/es_cdrw-664_select_bank_dynamic#the-readwrite-api-mock-server ) section.
 
 #### Proxied API path
 
@@ -247,39 +239,20 @@ On Windows, use instructions provided here [Install MongoDB Community Edition on
 
 Then set the environment variable `MONGODB_URI` as per your mongodb instance, e.g. `MONGODB_URI=mongodb://localhost:27017/sample-tpp-server`. Example in [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample)
 
+#### The Read/Write API mock server
+
+We have a [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) that provides simulated endpoints to showcase what the Read/Write API can provide. Please install and run the server as per instructions on the [Github page](https://github.com/OpenBankingUK/readwrite-api-mock-server).
+
+Then ensure you point to the above server by configuring the `ASPSP_READWRITE_HOST` endpoint either directly or using in the [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample) file. Find details in the [To run locally](https://github.com/OpenBankingUK/sample-tpp-server#to-run-locally) section.
+
+__NOTE__: The [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) uses a [Swagger](http://swagger.io) file that documents the spec. This is stored in the mock server's `SWAGGER` ENV. To obtain this you have to setup another repo [account-info-api-spec](https://github.com/OpenBankingUK/account-info-api-spec). That repo's [README](https://github.com/OpenBankingUK/account-info-api-spec/blob/master/README.md) contains setup necessary details.
+
 ### Server setup
 
 Install npm packages:
 
 ```sh
 npm install
-```
-
-## Testing
-
-Run unit tests with:
-
-```sh
-npm run test
-```
-
-Run tests continuously on file changes in watch mode via:
-
-```sh
-npm run test:watch
-```
-
-
-Manual Testing  
-Sending Form Data to login with POstman - use `x-www-form-urlencoded`
-
-
-### eslint
-
-Run eslint checks with:
-
-```sh
-npm run eslint
 ```
 
 ## To run locally
@@ -351,3 +324,30 @@ git push heroku master
 ```
 
 Edit `./Procfile` to change what command should be executed to start the app.
+
+## Testing
+
+Run unit tests with:
+
+```sh
+npm run test
+```
+
+Run tests continuously on file changes in watch mode via:
+
+```sh
+npm run test:watch
+```
+
+
+Manual Testing  
+Sending Form Data to login with POstman - use `x-www-form-urlencoded`
+
+
+### eslint
+
+Run eslint checks with:
+
+```sh
+npm run eslint
+```
