@@ -8,7 +8,9 @@ const error = require('debug')('error');
 const { getAll, set } = require('./storage');
 
 const AUTH_SERVER_COLLECTION = 'aspspAuthorisationServers';
+const NOT_PROVISIONED_FOR_OB_TOKEN = 'NO_TOKEN';
 
+const provisionedForOpenBanking = process.env.OB_PROVISIONED === 'true';
 const directoryHost = process.env.OB_DIRECTORY_HOST;
 const directoryAuthHost = process.env.OB_DIRECTORY_AUTH_HOST;
 const softwareStatementId = process.env.SOFTWARE_STATEMENT_ID;
@@ -129,7 +131,8 @@ const getAccessToken = async () => {
 const fetchOBAccountPaymentServiceProviders = async () => {
   try {
     const uri = `${directoryHost}/scim/v2/OBAccountPaymentServiceProviders/`;
-    const accessToken = await getAccessToken();
+    const accessToken = provisionedForOpenBanking ?
+      (await getAccessToken()) : { token: NOT_PROVISIONED_FOR_OB_TOKEN };
     const bearerToken = `Bearer ${accessToken.token}`;
     log(`getting: ${uri}`);
     const response = await request({

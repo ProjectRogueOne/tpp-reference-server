@@ -7,6 +7,7 @@ process.env.DEBUG = 'error';
 process.env.ASPSP_READWRITE_HOST = 'example.com';
 process.env.AUTHORIZATION = authorization;
 process.env.X_FAPI_FINANCIAL_ID = xFapiFinancialId;
+process.env.OB_PROVISIONED = 'true';
 process.env.OB_DIRECTORY_HOST = 'http://example.com';
 process.env.OB_DIRECTORY_AUTH_HOST = 'http://auth.com';
 process.env.SOFTWARE_STATEMENT_ID = 'xxxxxxxx-xx2b-4xx3-a19a-xx9ec3baxxxx';
