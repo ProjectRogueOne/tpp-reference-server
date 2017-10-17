@@ -228,15 +228,19 @@ DEBUG=error,log \
 #   log  App listening on port 8003 ...
 ```
 
-Set debug log levels using `DEBUG` env var.
-Set API host using `ASPSP_READWRITE_HOST` env var.
-Set hardcoded auth token using `AUTHORIZATION` env var.
-Set OB Provisioned status using `OB_PROVISIONED` env var.
-Set OB Directory host using `OB_DIRECTORY_HOST` env var.
-Set OB Directory access_token using `OB_DIRECTORY_ACCESS_TOKEN` env var.
-Set hardcoded x-fapi-financial-id using `X_FAPI_FINANCIAL_ID` env var.
-Set the environment variables `REDIS_PORT` and `REDIS_HOST`
-as per your redis instance.
+* Set debug log levels using `DEBUG` env var.
+* Set API host using `ASPSP_READWRITE_HOST` env var.
+* Set hardcoded auth token using `AUTHORIZATION` env var.
+* Set OB Provisioned status using `OB_PROVISIONED` env var.
+* Set OB Directory host using `OB_DIRECTORY_HOST` env var.
+* Set OB Directory access_token using `OB_DIRECTORY_ACCESS_TOKEN` env var.
+* Set hardcoded x-fapi-financial-id using `X_FAPI_FINANCIAL_ID` env var.
+* Set the environment variables `REDIS_PORT` and `REDIS_HOST` as per your redis instance.
+Set the environment variables `MONGODB_URI` as per your mongodb instance.
+
+### Already provisioned with OB Directory
+
+As a TPP, if you have been provisioned with the Open Banking Directory and have already setup a Software Statement, then update/add the `OB_*` ENVs as discussed in [OB Directory provisioned section](#ob-directory-provisioned-tpp).
 
 ## Deploy to heroku
 
@@ -273,6 +277,10 @@ git push heroku master
 ```
 
 Edit `./Procfile` to change what command should be executed to start the app.
+
+### Already provisioned with OB Directory
+
+As a TPP, if you have been provisioned with the Open Banking Directory and have already setup a Software Statement, then update/add the `OB_*` ENVs as discussed in [OB Directory provisioned section](#ob-directory-provisioned-tpp).
 
 ## Testing
 
