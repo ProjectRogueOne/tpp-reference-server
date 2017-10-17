@@ -101,7 +101,7 @@ Here's a sample list of test ASPSPs. This is __NOT__ the raw response from the O
 ]
 ```
 
-### Proxy requests for upstream backend ASPSP APIs
+### Proxy requests for upstream backend ASPSP APIs (v1.1)
 
 __NOTE:__ For this to work you need an ASPSP server installed and running. Details in The [Read/Write API Mock Server](#the-readwrite-api-mock-server) section.
 
@@ -122,35 +122,7 @@ We have a hardcoded demo user `alice` with bank `abcbank` setup in [Read/Write A
 curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' -H 'Accept: application/json'  http://localhost:8003/open-banking/v1.1/accounts
 ```
 
-A sample response looks like this:
-
-```sh
-{
-  "Data": [
-    {
-      "AccountId": "22289",
-      "Currency": "GBP",
-      "Nickname": "bills",
-      "Account": {
-        "SchemeName": "BBAN",
-        "Identification": "10203345",
-        "Name": "Ms Liddell",
-        "SecondaryIdentification": "341267"
-      },
-      "Servicer": {
-        "SchemeName": "UKSortCode",
-        "Identification": "SC802001"
-      }
-    }
-  ],
-  "Links": {
-    "Self": "/accounts"
-  },
-  "Meta": {
-    "TotalPages": 1
-  }
-}
-```
+[Here's a sample response](https://www.openbanking.org.uk/read-write-apis/account-transaction-api/v1-1-0/#accounts-bulk-response).
 
 #### GET Product associated with an account (Account and Transaction API)
 
@@ -160,28 +132,7 @@ Using the same demo account as above.
 curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' -H 'Accept: application/json'  http://localhost:8003/open-banking/v1.1/accounts/22289/product
 ```
 
-A sample response looks like this:
-
-```sh
-{
-  "Data": {
-    "Product": [
-      {
-        "AccountId": "22289",
-        "ProductIdentifier": "CC",
-        "ProductType": "PCA",
-        "ProductName": "321"
-      }
-    ]
-  },
-  "Links": {
-    "Self": "/accounts/22289/product"
-  },
-  "Meta": {
-    "TotalPages": 1
-  }
-}
-```
+[Here's a sample response](https://www.openbanking.org.uk/read-write-apis/account-transaction-api/v1-1-0/#product-specific-account-response).
 
 #### GET Balances associated with an account (Account and Transaction API)
 
@@ -191,40 +142,7 @@ Using the same demo account as above.
 curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' -H 'Accept: application/json'  http://localhost:8003/open-banking/v1.1/accounts/22289/balances
 ```
 
-A sample request looks like this:
-
-```sh
-{
-  "Data": {
-    "Balance": [
-      {
-        "AccountId": "22289",
-        "Amount": {
-          "Amount": "1230.00",
-          "Currency": "GBP"
-        },
-        "CreditDebitIndicator": "Credit",
-        "Type": "InterimAvailable",
-        "DateTime": "2017-04-05T10:43:07+00:00",
-        "CreditLine": {
-          "Included": true,
-          "Amount": {
-            "Amount": "1000.00",
-            "Currency": "GBP"
-          },
-          "Type": "Pre-Agreed"
-        }
-      }
-    ]
-  },
-  "Links": {
-    "Self": "/accounts/22289/balances"
-  },
-  "Meta": {
-    "TotalPages": 1
-  }
-}
-```
+[Here's a sample response](https://www.openbanking.org.uk/read-write-apis/account-transaction-api/v1-1-0/#balances-specific-account-response).
 
 ## Installation
 
@@ -268,9 +186,11 @@ On Windows, use instructions provided here [Install MongoDB Community Edition on
 
 Then set the environment variable `MONGODB_URI` as per your mongodb instance, e.g. `MONGODB_URI=mongodb://localhost:27017/sample-tpp-server`. Example in [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample)
 
-#### The Read/Write API mock server
+#### The Read/Write API v1.1 mock server
 
 We have a [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) that provides simulated endpoints to showcase what the Read/Write API can provide. Please install and run the server as per instructions on the [Github page](https://github.com/OpenBankingUK/readwrite-api-mock-server).
+
+> Make sure you run the mock API against v1.1, e.g. `VERSION=v1.1 npm run start`.
 
 Then ensure you point to the above server by configuring the `ASPSP_READWRITE_HOST` endpoint either directly or using in the [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample) file. Find details in the [To run locally](https://github.com/OpenBankingUK/sample-tpp-server#to-run-locally) section.
 
