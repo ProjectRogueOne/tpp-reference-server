@@ -78,7 +78,10 @@ Please __change__ the `Authorization` header to use the `sid` obtained after log
 curl -X GET -H 'Authorization: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx' http://localhost:8003/account-payment-service-provider-authorisation-servers
 ```
 
-Here's a sample list of test ASPSPs as requested from the Open Banking Directory.
+Here's a sample list of test ASPSPs. This is __NOT__ the raw response from the Open Banking Directory. It has been adapted to simulate what a typical client app would require.
+
+> __NOTE__: the actual `id` won't be a URI. It'll be an authorisation server id - that is planned to be added to the Directory JSON payload.
+> We are simulating an `id` by combining the ASPSP's `organisation id` with the authorisation server `BaseApiDNSUri`.
 
 ```sh
 [
@@ -270,8 +273,6 @@ Then set the environment variable `MONGODB_URI` as per your mongodb instance, e.
 We have a [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) that provides simulated endpoints to showcase what the Read/Write API can provide. Please install and run the server as per instructions on the [Github page](https://github.com/OpenBankingUK/readwrite-api-mock-server).
 
 Then ensure you point to the above server by configuring the `ASPSP_READWRITE_HOST` endpoint either directly or using in the [`.env.sample`](https://github.com/OpenBankingUK/sample-tpp-server/blob/master/.env.sample) file. Find details in the [To run locally](https://github.com/OpenBankingUK/sample-tpp-server#to-run-locally) section.
-
-__NOTE__: The [Read/Write API mock server](https://github.com/OpenBankingUK/readwrite-api-mock-server) uses a [Swagger](http://swagger.io) file that documents the spec. This is stored in the mock server's `SWAGGER` ENV. To obtain this you have to setup another repo [account-info-api-spec](https://github.com/OpenBankingUK/account-info-api-spec). That repo's [README](https://github.com/OpenBankingUK/account-info-api-spec/blob/master/README.md) contains setup necessary details.
 
 ### Server setup
 
