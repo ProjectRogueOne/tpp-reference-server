@@ -23,7 +23,7 @@ const login = (() => {
     const { p } = req.body;
     const allow = checkCredentials(u, p);
     if (allow) {
-      sid = session.getNewSid();
+      sid = session.newId();
       res.setHeader('Content-Type', 'application/json');
       res.status(200).send(JSON.stringify({ sid }));
     } else if (u === 'trigger-error') {
@@ -37,7 +37,7 @@ const login = (() => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     const sid = req.headers['authorization'];
     log(`in logout sid is ${sid}`);
-    session.destroySession(sid, (sidConf) => {
+    session.destroy(sid, (sidConf) => {
       if (sidConf) {
         log(`destroying sid ${sidConf}`);
         res.setHeader('Content-Type', 'application/json');

@@ -23,40 +23,36 @@ client.on('error', (err) => {
 });
 
 const store = (() => {
-  const setSession = (sid, value, cb) => {
+  const set = (key, value, cb) => {
     const cbk = cb || noop;
-    if (typeof sid !== 'string') throw new Error(' sid must be string ');
-    if (typeof value !== 'string') throw new Error(' value must be string ');
-    log(`setting sid to ${sid} with value ${value}`);
-    client.set(sid, value, 'EX', 3600); // Default to 1 hour so we don't have too many sessions stored
+    if (typeof key !== 'string') throw new Error(' key must be of type String ');
+    if (typeof value !== 'string') throw new Error(' value must be of type String ');
+    log(`setting key to ${key} with value ${value}`);
+    client.set(key, value, 'EX', 3600); // Default to 1 hour so we don't have too many sessions stored
     return cbk();
   };
 
-  const getSession = (sid, cb) => {
+  const get = (key, cb) => {
     const cbk = cb || noop;
-    log(`in get session sid is ${sid}`);
-    if (!sid) return cbk(null, null);
-    return client.get(sid, cbk);
+    log(`in get key is ${key}`);
+    if (!key) return cbk(null, null);
+    return client.get(key, cbk);
   };
 
-  const delSession = (sid) => {
-    client.del(sid, noop);
-  };
+  const remove = key => client.del(key, noop);
 
-  const getAllSessions = (cb) => {
+  const getAll = (cb) => {
     const cbk = cb || noop;
     client.keys('*', cbk);
   };
 
-  const deleteAll = () => {
-    client.flushall(noop);
-  };
+  const deleteAll = () => client.flushall(noop);
 
   return {
-    setSession,
-    getSession,
-    delSession,
-    getAllSessions,
+    set,
+    get,
+    remove,
+    getAll,
     deleteAll,
   };
 })();

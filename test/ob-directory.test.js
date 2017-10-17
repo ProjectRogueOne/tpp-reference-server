@@ -1,16 +1,32 @@
 const request = require('supertest');
+const fs = require('fs');
+const path = require('path');
+
+const accessToken = 'AN_ACCESS_TOKEN';
 
 const { drop } = require('../app/storage.js');
 const { app } = require('../app/index.js');
 const { session } = require('../app/session.js');
 const { AUTH_SERVER_COLLECTION } = require('../app/ob-directory');
-const assert = require('assert');
 
+const assert = require('assert');
 const nock = require('nock');
+
+nock(/secure-url\.com/)
+  .get('/private_key.pem')
+  .reply(200, fs.readFileSync(path.join(__dirname, 'test_private_key.pem')));
+
+nock(/auth\.com/)
+  .post('/as/token.oauth2')
+  .reply(200, {
+    access_token: accessToken,
+    token_type: 'Bearer',
+    expires_in: 1000,
+  });
 
 const directoryHeaders = {
   reqheaders: {
-    authorization: 'Bearer undefined',
+    authorization: `Bearer ${accessToken}`,
   },
 };
 
@@ -76,7 +92,7 @@ const login = application => request(application)
   .send({ u: 'alice', p: 'wonderland' });
 
 describe('Directory', () => {
-  session.setSession('foo');
+  session.setId('foo');
 
   it('returns proxy 200 response for /account-payment-service-provider-authorisation-servers', (done) => {
     login(app).end((err, res) => {
