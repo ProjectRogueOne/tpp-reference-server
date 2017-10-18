@@ -86,18 +86,23 @@ Here's a sample list of test ASPSPs. This is __NOT__ the raw response from the O
 ```sh
 [
   {
-    "id": "https://banka.api-bank.co.uk",
+    "id": "aaa-example-org-http://aaa.example.com",
     "logoUri": "",
-    "name": "Dev-Auth-Server",
-    "orgId": "XXXXXXXXXXXXXXXXXX"
+    "name": "AAA Example Bank",
+    "orgId": "aaa-example-org",
   },
   {
-    "id": "http://MyAuth.co.uk",
-    "logoUri": "http://MyAuth.co.uk",
-    "name": "MyAuthServer",
-    "orgId": "XXXXXXXXXXXXXXXXXX"
+    "id": "bbbccc-example-org-http://bbb.example.com",
+    "logoUri": "",
+    "name": "BBB Example Bank",
+    "orgId": "bbbccc-example-org",
   },
-  ....
+  {
+    "id": "bbbccc-example-org-http://ccc.example.com",
+    "logoUri": "",
+    "name": "CCC Example Bank",
+    "orgId": "bbbccc-example-org",
+  }
 ]
 ```
 

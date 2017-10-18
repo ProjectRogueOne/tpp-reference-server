@@ -32,19 +32,19 @@ const directoryHeaders = {
 
 const expectedResult = [
   {
-    id: 'http://aaa.example.com',
+    id: 'aaa-example-org-http://aaa.example.com',
     logoUri: 'string',
     name: 'AAA Example Bank',
     orgId: 'aaa-example-org',
   },
   {
-    id: 'http://bbb.example.com',
+    id: 'bbbccc-example-org-http://bbb.example.com',
     logoUri: 'string',
     name: 'BBB Example Bank',
     orgId: 'bbbccc-example-org',
   },
   {
-    id: 'http://ccc.example.com',
+    id: 'bbbccc-example-org-http://ccc.example.com',
     logoUri: 'string',
     name: 'CCC Example Bank',
     orgId: 'bbbccc-example-org',
