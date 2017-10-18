@@ -35,7 +35,7 @@ const sortByName = (list) => {
 };
 
 const transformServerData = (data) => {
-  const id = data.BaseApiDNSUri;
+  const { id } = data;
   const logoUri = data.CustomerFriendlyLogoUri;
   const name = data.CustomerFriendlyName;
   const { orgId } = data;
