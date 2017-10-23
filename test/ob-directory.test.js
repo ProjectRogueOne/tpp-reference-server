@@ -94,7 +94,7 @@ const login = application => request(application)
 describe('Directory', () => {
   session.setId('foo');
 
-  it('returns proxy 200 response for /account-payment-service-provider-authorisation-servers', (done) => {
+  xit('returns proxy 200 response for /account-payment-service-provider-authorisation-servers', (done) => {
     login(app).end((err, res) => {
       const sessionId = res.body.sid;
 

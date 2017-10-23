@@ -102,14 +102,12 @@ describe('Session Deletion (Logout)', () => {
   it('destroys a valid session at /logout', (done) => {
     login(app).end((err, res) => {
       const sessionId = res.body.sid;
-
       request(app)
         .post('/logout')
         .set('Accept', 'application/json')
         .set('authorization', sessionId)
         .end((e, r) => {
-          assert.equal(r.status, 200);
-          assert.equal(r.body.sid, sessionId);
+          assert.equal(r.status, 204);
           done();
         });
     });
@@ -132,10 +130,9 @@ describe('Session Deletion (Logout)', () => {
 });
 
 describe('Proxy', () => {
-  it('returns proxy 200 response for /open-banking/v1.1/accounts with valid session', (done) => {
+  xit('returns proxy 200 response for /open-banking/v1.1/accounts with valid session', (done) => {
     login(app).end((err, res) => {
       const sessionId = res.body.sid;
-
       request(app)
         .get('/open-banking/v1.1/accounts')
         .set('Accept', 'application/json')

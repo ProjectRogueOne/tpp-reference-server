@@ -2,7 +2,6 @@ const {
   set, get, getAll, drop,
 } = require('../app/storage.js');
 const assert = require('assert');
-// const error = require('debug')('error');
 
 describe('storage set data with id', () => {
   const collection = 'testAuthServers';

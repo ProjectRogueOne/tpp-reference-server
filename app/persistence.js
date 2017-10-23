@@ -27,14 +27,14 @@ const store = (() => {
     const cbk = cb || noop;
     if (typeof key !== 'string') throw new Error(' key must be of type String ');
     if (typeof value !== 'string') throw new Error(' value must be of type String ');
-    log(`setting key to ${key} with value ${value}`);
+    log(`in Store Set setting key to ${key} with value ${value}`);
     client.set(key, value, 'EX', 3600); // Default to 1 hour so we don't have too many sessions stored
     return cbk();
   };
 
   const get = (key, cb) => {
     const cbk = cb || noop;
-    log(`in get key is ${key}`);
+    // log(`in get key is ${key}`);
     if (!key) return cbk(null, null);
     return client.get(key, cbk);
   };

@@ -134,7 +134,7 @@ const fetchOBAccountPaymentServiceProviders = async () => {
     const accessToken = provisionedForOpenBanking ?
       (await getAccessToken()) : { token: NOT_PROVISIONED_FOR_OB_TOKEN };
     const bearerToken = `Bearer ${accessToken.token}`;
-    log(`getting: ${uri}`);
+    // log(`getting: ${uri}`);
     const response = await request({
       url: uri,
       method: 'GET',
@@ -143,10 +143,9 @@ const fetchOBAccountPaymentServiceProviders = async () => {
         Accept: 'application/json',
       },
     });
-    log(`response: ${response.status}`);
+    // log(`response: ${response.status}`);
     if (response.status === 200) {
       const authServers = extractAuthorisationServers(response.data);
-      log(`data: ${JSON.stringify(authServers)}`);
       await storeAuthorisationServers(authServers);
       return storedAuthorisationServers();
     }

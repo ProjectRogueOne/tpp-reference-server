@@ -5,7 +5,6 @@ if the username and password match - create a session cookie
 
 const { session } = require('./session');
 const { credentials } = require('./credentials');
-const log = require('debug')('log');
 
 /**
  * This is obviously insanely simplified and no production code should use this method
@@ -36,10 +35,10 @@ const login = (() => {
   const logout = (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     const sid = req.headers['authorization'];
-    log(`in logout sid is ${sid}`);
+    // log(`in logout sid is ${sid}`);
     session.destroy(sid, (sidConf) => {
       if (sidConf) {
-        log(`destroying sid ${sidConf}`);
+        // log(`destroying sid ${sidConf}`);
         res.setHeader('Content-Type', 'application/json');
         res.status(200).send(JSON.stringify({ sid: sidConf }));
       } else {

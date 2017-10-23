@@ -1,4 +1,3 @@
-
 const credentials = {
   alice: {
     p: 'wonderland',

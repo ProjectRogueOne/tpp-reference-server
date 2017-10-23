@@ -14,10 +14,12 @@
     "debug": "^3.1.0",
     "express": "^4.15.5",
     "express-http-proxy": "^1.0.7",
+    "monk": "^6.0.5",
     "njwt": "0.4.0",
     "qs": "6.5.1",
-    "monk": "^6.0.5",
     "redis": "^2.8.0",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
     "uuid": "^3.1.0"
   },
   "devDependencies": {

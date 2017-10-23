@@ -1,4 +1,5 @@
 const { session } = require('./session');
+const log = require('debug')('log');
 
 const authorization = process.env.AUTHORIZATION;
 
@@ -8,8 +9,11 @@ const authorization = process.env.AUTHORIZATION;
  * @returns {*}
  */
 const getAuthFromSession = (candidate, callback) => {
-  session.getId((err, sid) => {
-    if (sid === candidate) {
+  session.getId(candidate, (err, sessionString) => {
+    const sessionObject = JSON.parse(sessionString);
+    log(` In getAuthFromSession candidate was ${candidate}`);
+    log(sessionString);
+    if (sessionObject && sessionObject.sessionId === candidate) {
       return callback(authorization);
     }
     return callback('');
