@@ -1,4 +1,4 @@
-# Sample TPP Server
+# TPP reference server
 
 This application simulates a typical TPP backend server. Its primary function is to provide Open Banking processes to a client.
 
