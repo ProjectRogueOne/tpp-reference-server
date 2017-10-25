@@ -11,8 +11,8 @@ const authorization = process.env.AUTHORIZATION;
 const getAuthFromSession = (candidate, callback) => {
   session.getId(candidate, (err, sessionString) => {
     const sessionObject = JSON.parse(sessionString);
-    log(` In getAuthFromSession candidate was ${candidate}`);
-    log(sessionString);
+    // log(` In getAuthFromSession candidate was ${candidate}`);
+    // log(sessionString);
     if (sessionObject && sessionObject.sessionId === candidate) {
       return callback(authorization);
     }

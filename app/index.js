@@ -7,7 +7,7 @@ const { requireAuthorization } = require('./authorization');
 const { login } = require('./login');
 const { proxyMiddleware } = require('./proxy.js');
 const { OBAccountPaymentServiceProviders } = require('./ob-directory');
-// const { accountRequestHandler } = require('./account-request');  // SE BELOW re Middleware
+const { accountRequestHandler } = require('./account-request'); // SEE BELOW re Middleware
 const { hybrid } = require('./flows/hybrid.js');
 
 const app = express();
@@ -21,7 +21,7 @@ app.all('/account-payment-service-provider-authorisation-servers', requireAuthor
 app.use('/account-payment-service-provider-authorisation-servers', OBAccountPaymentServiceProviders);
 app.all('/open-banking/*', requireAuthorization);
 // NOTE - Temporarily Disabled until proxy plays nicely with Middleware !
-// app.use('/open-banking', accountRequestHandler()); // Does STEP 2
+app.use('/open-banking', accountRequestHandler()); // Does STEP 2
 app.use('/open-banking', proxyMiddleware);
 
 exports.app = app;
