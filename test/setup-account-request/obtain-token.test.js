@@ -32,7 +32,7 @@ describe('Setup account request POST /token non 200 response', () => {
       assert.ok(false);
     } catch (error) {
       assert.equal(error.name, 'Error');
-      assert.equal(error.message, 'Request failed with status code 403');
+      assert.equal(error.message, 'Forbidden');
       assert.equal(error.status, 403);
     }
   });
@@ -45,7 +45,7 @@ describe('Setup account request POST /token error sending request', () => {
       assert.ok(false);
     } catch (error) {
       assert.equal(error.name, 'Error');
-      assert.equal(error.message, 'connect ECONNREFUSED 127.0.0.1:80');
+      assert.equal(error.message, 'getaddrinfo ENOTFOUND bad-uri bad-uri:80');
       assert.equal(error.status, 500);
     }
   });
