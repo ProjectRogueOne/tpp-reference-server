@@ -33,9 +33,9 @@
   "scripts": {
     "foreman": "./node_modules/foreman/nf.js start",
     "start": "node index.js",
-    "test": "MONGODB_URI='localhost:27017/test-tpp-server' mocha",
-    "test:watch": "MONGODB_URI='localhost:27017/test-tpp-server' mocha --watch",
-    "test:debug": "MONGODB_URI='localhost:27017/test-tpp-server' node --inspect node_modules/mocha/bin/_mocha --watch --no-timeouts",
+    "test": "MONGODB_URI='localhost:27017/test-tpp-server' mocha --recursive",
+    "test:watch": "MONGODB_URI='localhost:27017/test-tpp-server' mocha --recursive --watch",
+    "test:debug": "MONGODB_URI='localhost:27017/test-tpp-server' node --inspect-brk node_modules/mocha/bin/_mocha --recursive --watch --no-timeouts",
     "eslint": "node ./node_modules/eslint/bin/eslint.js .",
     "checks": "node ./node_modules/eslint/bin/eslint.js . && mocha"
   },
