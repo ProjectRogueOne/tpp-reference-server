@@ -28,6 +28,7 @@
     "foreman": "^2.0.0",
     "mocha": "^3.5.3",
     "nock": "^9.0.22",
+    "proxyquire": "^1.8.0",
     "sinon": "^4.0.0",
     "supertest": "^3.0.0"
   },
