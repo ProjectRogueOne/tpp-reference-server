@@ -1,9 +1,9 @@
 const request = require('superagent');
 
-const postToken = async (authServerHost) => {
+const postToken = async (authorisationServerHost) => {
   try {
     const response = await request
-      .post(`${authServerHost}/token`)
+      .post(`${authorisationServerHost}/token`)
       .set('authorization', 'xxx')
       .type('form') // e.g. 'content-type': 'application/x-www-form-urlencoded'
       .send({
