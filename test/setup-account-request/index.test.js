@@ -5,11 +5,15 @@ const sinon = require('sinon');
 describe('setupAccountRequest called with authorisationServerId', () => {
   const accessToken = 'access-token';
   const authServerHost = 'http://example.com';
+  const clientId = 'id';
+  const clientSecret = 'secret';
   let setupAccountRequest;
   let postTokenStub;
 
   before(() => {
     process.env.ASPSP_AUTH_SERVER = authServerHost;
+    process.env.ASPSP_AUTH_SERVER_CLIENT_ID = clientId;
+    process.env.ASPSP_AUTH_SERVER_CLIENT_SECRET = clientSecret;
     postTokenStub = sinon.stub().returns({ access_token: accessToken });
     setupAccountRequest = proxyquire(  // eslint-disable-line
       '../../app/setup-account-request',
@@ -19,11 +23,13 @@ describe('setupAccountRequest called with authorisationServerId', () => {
 
   after(() => {
     process.env.ASPSP_AUTH_SERVER = null;
+    process.env.ASPSP_AUTH_SERVER_CLIENT_ID = null;
+    process.env.ASPSP_AUTH_SERVER_CLIENT_SECRET = null;
   });
 
   it('returns access-token from postToken call', async () => {
     const token = await setupAccountRequest('authorisationServerId');
     assert.equal(token, accessToken);
-    assert(postTokenStub.calledWith(authServerHost));
+    assert(postTokenStub.calledWith(authServerHost, clientId, clientSecret));
   });
 });
