@@ -1,6 +1,7 @@
 if (!process.env.DEBUG) process.env.DEBUG = 'error,log';
 
 const express = require('express');
+const morgan = require('morgan');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const { session } = require('./session');
@@ -11,6 +12,11 @@ const { OBAccountPaymentServiceProviders } = require('./ob-directory');
 const { accountRequestAuthoriseConsent } = require('./account-request-authorise-consent');
 
 const app = express();
+
+if (process.env.NODE_ENV !== 'test') { // don't log requests when testing
+  app.use(morgan('dev')); // for logging
+}
+
 app.options('*', cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
