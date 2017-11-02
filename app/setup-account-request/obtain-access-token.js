@@ -1,4 +1,5 @@
 const request = require('superagent');
+const log = require('debug')('log');
 
 // Use Basic Authentication Scheme: https://tools.ietf.org/html/rfc2617#section-2
 const credentials = (userid, password) => {
@@ -15,9 +16,12 @@ const credentials = (userid, password) => {
  */
 const postToken = async (authorisationServerHost, clientId, clientSecret) => {
   try {
+    const tokenUri = `${authorisationServerHost}/token`;
+    const authCredentials = credentials(clientId, clientSecret);
+    log(`POST to ${tokenUri}`);
     const response = await request
       .post(`${authorisationServerHost}/token`)
-      .set('authorization', credentials(clientId, clientSecret))
+      .set('authorization', authCredentials)
       .set('content-type', 'application/x-www-form-urlencoded')
       .send({
         scope: 'accounts',
