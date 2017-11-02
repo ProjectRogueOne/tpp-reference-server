@@ -12,7 +12,11 @@ const { OBAccountPaymentServiceProviders } = require('./ob-directory');
 const { accountRequestAuthoriseConsent } = require('./account-request-authorise-consent');
 
 const app = express();
-app.use(morgan('dev')); // for logging
+
+if (process.env.NODE_ENV !== 'test') { // don't log requests when testing
+  app.use(morgan('dev')); // for logging
+}
+
 app.options('*', cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
