@@ -2,6 +2,20 @@ const assert = require('assert');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
 
+describe('setupAccountRequest called with null authorisationServerId', () => {
+  it('throws error with 400 status set', async () => {
+    try {
+      const { setupAccountRequest } = require('../../app/setup-account-request/setup-account-request'); // eslint-disable-line
+      await setupAccountRequest(null);
+      assert.ok(false);
+    } catch (error) {
+      assert.equal(error.message, 'authorisationServerId missing from request payload');
+      assert.equal(error.name, 'Error');
+      assert.equal(error.status, 400);
+    }
+  });
+});
+
 describe('setupAccountRequest called with authorisationServerId', () => {
   const accessToken = 'access-token';
   const authServerHost = 'http://example.com';

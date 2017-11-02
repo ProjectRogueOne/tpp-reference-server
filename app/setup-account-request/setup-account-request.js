@@ -12,6 +12,11 @@ const clientCredentials = async authorisationServerId => (
   } : null);
 
 const setupAccountRequest = async (authorisationServerId) => {
+  if (!authorisationServerId) {
+    const error = new Error('authorisationServerId missing from request payload');
+    error.status = 400;
+    throw error;
+  }
   const authorizationServerHost = await authorisationServerHost(authorisationServerId);
   const { clientId, clientSecret } = await clientCredentials(authorisationServerId);
   const response = await postToken(authorizationServerHost, clientId, clientSecret);
