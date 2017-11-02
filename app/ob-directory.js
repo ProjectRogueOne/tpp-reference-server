@@ -3,6 +3,7 @@ const nJwt = require('njwt');
 const qs = require('qs');
 const { session } = require('./session');
 const util = require('util');
+const debug = require('debug')('debug');
 const log = require('debug')('log');
 const error = require('debug')('error');
 const { getAll, set } = require('./storage');
@@ -146,7 +147,7 @@ const fetchOBAccountPaymentServiceProviders = async () => {
     log(`response: ${response.status}`);
     if (response.status === 200) {
       const authServers = extractAuthorisationServers(response.data);
-      log(`data: ${JSON.stringify(authServers)}`);
+      debug(`data: ${JSON.stringify(authServers)}`);
       await storeAuthorisationServers(authServers);
       return storedAuthorisationServers();
     }
