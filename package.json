@@ -12,6 +12,7 @@
     "body-parser": "^1.18.2",
     "cors": "^2.8.4",
     "debug": "^3.1.0",
+    "env-var": "3.0.2",
     "express": "^4.15.5",
     "express-http-proxy": "^1.0.7",
     "monk": "^6.0.5",
