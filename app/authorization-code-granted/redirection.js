@@ -5,8 +5,7 @@ const url = env
   .required()
   .asString();
 
-// const handler = async (req, res) => res.status(200).send();
-const handler = async (req, res) => undefined;
+const handler = async (req, res) => res.status(200).send();
 
 exports.authorizationCodeGrantedUrl = url;
 exports.authorizationCodeGrantedHandler = handler;
