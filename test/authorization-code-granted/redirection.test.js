@@ -9,20 +9,20 @@ describe('Authorise Consent Redirection', () => {
 
   describe('url configured', () => {
     it('returns redirection url', () => {
-      redirection = proxyquire('../../app/authorise-consent/redirection', {
+      redirection = proxyquire('../../app/authorization-code-granted/redirection.js', {
         'env-var': env.mock({
           REGISTERED_REDIRECT_URL: fakeUrl,
         }),
       });
 
-      assert.equal(redirection.url, fakeUrl);
+      assert.equal(redirection.authorizationCodeGrantedUrl, fakeUrl);
     });
   });
 
   describe('url missing', () => {
     it('throws an error', () => {
       try {
-        redirection = proxyquire('../../app/authorise-consent/redirection', {});
+        redirection = proxyquire('../../app/authorization-code-granted/redirection.js', {});
       } catch (e) {
         assert(
           e.message.match(/"REGISTERED_REDIRECT_URL" is a required variable/),

@@ -5,4 +5,4 @@ const url = env
   .required()
   .asString();
 
-exports.url = url;
+exports.authorizationCodeGrantedUrl = url;
