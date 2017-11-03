@@ -22,12 +22,13 @@ describe('Authorized Code Granted Redirection', () => {
     });
 
     it('handles the redirection route', () => {
+      const state = 'the state';
       const request = httpMocks.createRequest({
         method: 'GET',
         url: '/authorized',
         query: {
           'authorization-code': '12345_67xxx',
-          state: 'state',
+          state,
         },
       });
       const response = httpMocks.createResponse();
