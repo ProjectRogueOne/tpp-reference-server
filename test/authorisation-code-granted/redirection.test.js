@@ -9,7 +9,7 @@ describe('Authorized Code Granted Redirection', () => {
   let redirection;
 
   beforeEach(() => {
-    redirection = proxyquire('../../app/authorization-code-granted/redirection.js', {
+    redirection = proxyquire('../../app/authorisation-code-granted/redirection.js', {
       'env-var': env.mock({
         REGISTERED_REDIRECT_URL: fakeUrl,
       }),
@@ -18,7 +18,7 @@ describe('Authorized Code Granted Redirection', () => {
 
   describe('url configured', () => {
     it('returns redirection url', () => {
-      assert.equal(redirection.authorizationCodeGrantedUrl, fakeUrl);
+      assert.equal(redirection.authorisationCodeGrantedUrl, fakeUrl);
     });
 
     it('handles the redirection route', () => {
@@ -27,12 +27,12 @@ describe('Authorized Code Granted Redirection', () => {
         method: 'GET',
         url: '/authorized',
         query: {
-          'authorization-code': '12345_67xxx',
+          'authorisation-code': '12345_67xxx',
           state,
         },
       });
       const response = httpMocks.createResponse();
-      redirection.authorizationCodeGrantedHandler(request, response);
+      redirection.authorisationCodeGrantedHandler(request, response);
       assert.equal(200, response.statusCode);
     });
   });
@@ -40,7 +40,7 @@ describe('Authorized Code Granted Redirection', () => {
   describe('url missing', () => {
     it('throws an error', () => {
       try {
-        redirection = proxyquire('../../app/authorization-code-granted/redirection.js', {});
+        redirection = proxyquire('../../app/authorisation-code-granted/redirection.js', {});
       } catch (e) {
         assert(
           e.message.match(/"REGISTERED_REDIRECT_URL" is a required variable/),

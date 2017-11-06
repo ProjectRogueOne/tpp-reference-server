@@ -7,5 +7,5 @@ const url = env
 
 const handler = async (req, res) => res.status(200).send();
 
-exports.authorizationCodeGrantedUrl = url;
-exports.authorizationCodeGrantedHandler = handler;
+exports.authorisationCodeGrantedUrl = url;
+exports.authorisationCodeGrantedHandler = handler;
